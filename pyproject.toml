@@ -1,0 +1,41 @@
+
+[tool.poetry]
+name = "ynet"
+version = "10.0.0"
+description = "Yemen Net Internet Services"
+authors = ["Osama Mohammed <omamkaz@gmail.com>"]
+readme = "README.md"
+
+
+[tool.flet]
+# org name in reverse domain name notation, e.g. "com.mycompany".
+# Combined with project.name to build bundle ID for iOS and Android apps
+org = "com.omamkaz"
+
+# project display name that is used as an app title on Android and iOS home screens,
+# shown in window titles and about app dialogs on desktop.
+product = "ynet"
+
+# company name to display in about app dialogs
+company = "omamkaz"
+
+# copyright text to display in about app dialogs
+copyright = "Copyright (C) 2024 by omamkaz"
+
+[tool.flet.app]
+path = "src"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flet = {version = "0.25.0"}
+bs4 = {version = "0.0.2"}
+requests = {version = "2.32.3"}
+humanize = {version = "4.10.0"}
+pydal = {version = "20240906.1"}
+
+[tool.poetry.group.dev.dependencies]
+flet = {extras = ["all"], version = "0.25.0"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
