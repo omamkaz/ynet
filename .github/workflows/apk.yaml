@@ -78,11 +78,14 @@ jobs:
 
     - name: Flet Build APK
       run: |
+        echo "App Path: $(pwd)"
         flutter doctor
         flutter config --no-analytics
         flet build apk \
         --verbose \
         --split-per-abi \
+        --compile-app \
+        --cleanup-on-compile \
         --android-adaptive-icon-background="#ffffff" \
         --include-packages flet_lottie \
         --build-number="$BUILD_NUMBER" \
@@ -92,6 +95,7 @@ jobs:
         --product="$PRODUCT" \
         --description="$DESCRIPTION" \
         --project="$PROJECT" \
+        --arch=arm64-v8a \
         --flutter-build-args=--release \
         --flutter-build-args=--target-platform \
         --flutter-build-args=android-arm64
