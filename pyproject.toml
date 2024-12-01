@@ -27,14 +27,14 @@ path = "src"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-flet = {version = "0.25.0"}
-bs4 = {version = "0.0.2"}
-requests = {version = "2.32.3"}
-humanize = {version = "4.10.0"}
-pydal = {version = "20240906.1"}
+flet = {version = "0.25.0", markers = ""}
+bs4 = {version = "0.0.2", markers = ""}
+requests = {version = "2.32.3", markers = ""}
+humanize = {version = "4.10.0", markers = ""}
+pydal = {version = "20240906.1". markers = ""}
 
 [tool.poetry.group.dev.dependencies]
-flet = {extras = ["all"], version = "0.25.0"}
+flet = {extras = ["all"], version = "0.25.0", markers = ""}
 
 [build-system]
 requires = ["poetry-core"]
