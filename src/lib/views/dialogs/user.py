@@ -36,6 +36,7 @@ class TextField(ft.TextField):
 
     def change_input_type(self, e: ft.ControlEvent = None):
         self.keyboard_type = None if self.keyboard_type is not None else ft.KeyboardType.NUMBER
+        self.suffix.selected = self.keyboard_type is not None
         self.update()
 
     def toggle_suffix(self, on: bool) -> None:
@@ -187,6 +188,7 @@ class UserDialog(ft.BottomSheet):
     def change_account_type(self, atype: int) -> None:
         self._change_account_type(atype)
         self.username.update()
+        self.password.update()
         self.update()
 
     def valid_user(self, atype: int = 0) -> bool | None:

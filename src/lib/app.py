@@ -6,11 +6,11 @@ import flet as ft
 from .views.cards import Cards
 from .views.list_user import UserListView
 from .views.bottom_bar import BottomAppBar
+from .views.tab_switch import TabSwitch
 from .constant import Refs, ThemeController, Platform
 
 
 class Application:
-
     def on_close_window(self, e = None):
         size: list[int] = [self.page.window.width, self.page.window.height]
         self.page.client_storage.set("size", size)
@@ -33,7 +33,7 @@ class Application:
         page.horizontal_alignment = page.vertical_alignment = "center"
 
         page.title = "ynet"
-        page.window.icon = "assets/icon.png"
+        page.window.icon = "/icon.png"
         page.theme_mode = ThemeController.get_theme_mode(page)
         page.fonts = {
             "linaround": "/fonts/linaround_regular.otf"
@@ -84,6 +84,7 @@ class Application:
                                 Cards(page, ref=Refs.cards)
                             ]
                         ),
+                        TabSwitch(page),
                         UserListView(page, ref=Refs.users)
                     ]
                 )

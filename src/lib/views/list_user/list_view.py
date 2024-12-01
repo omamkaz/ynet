@@ -7,19 +7,22 @@ from ...models.user import User
 from .list_tile import UserListTile
 
 
-class UserListView(ft.ListView):
+class UserListView(ft.Column):
     def __init__(self, page: ft.Page, **kwargs):
         super().__init__(**kwargs)
 
         self.page = page
         self.spacing = 6
         self.expand = True
+        self.scroll = ft.ScrollMode.HIDDEN
+
+        tab_switch = self.page.client_storage.get("tab_switch")
         self.controls = [
-            self.new_item(i, user)
-            for i, user in enumerate(User.get_users(), 1)
+            self.new_item(index, user, tab_switch if tab_switch is not None else 0)
+            for index, user in enumerate(User.get_users(), 1)
         ]
 
-    def new_item(self, index: int, user) -> UserListTile:
+    def new_item(self, index: int, user, tab_switch: int = 0) -> UserListTile:
         return UserListTile(
             page=self.page,
             index=index,
@@ -27,14 +30,18 @@ class UserListView(ft.ListView):
             title=user.dname or f"حساب رقم {index}",
             subtitle=user.username,
             verified=user.data is not None,
-            data=user.id
+            data=user.id,
+            visible = tab_switch == user.atype
         )
 
     def update_list(self):
         self.controls.clear()
-        for i, user in enumerate(User.get_users(), 1):
+        tab_switch = self.page.client_storage.get("tab_switch")
+        for index, user in enumerate(User.get_users(), 1):
             self.controls.append(
-                self.new_item(i, user)
+                self.new_item(index, 
+                              user, 
+                              tab_switch if tab_switch is not None else 0)
             )
         self.update()
 

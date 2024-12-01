@@ -54,7 +54,7 @@ class AboutDialog(ft.BottomSheet):
                         height=64,
                         shape=ft.BoxShape("circle"),
                         image = ft.DecorationImage(
-                            src="assets/developer.jpg",
+                            src="/developer.jpg",
                             fit="cover"
                         )
                     ),
@@ -97,35 +97,15 @@ class AboutDialog(ft.BottomSheet):
                         )
                     ),
                     ft.Container(
-                        # alignment=ft.alignment.center,
-                        # margin=ft.margin.only(right=10, bottom=10, left=10),
-                        # content=ft.Text(
-                        #     value=APP_VERSION,
-                        #     weight=ft.FontWeight.BOLD,
-                        #     font_family="Monospace",
-                        #     text_align="center",
-                        #     size=13
-                        # ),
-
-                        # with left image
-                        content=ft.Row(
-                            alignment=ft.MainAxisAlignment.CENTER,
-                            controls=[
-                                ft.Image(
-                                    src="assets/brand.png",
-                                    width=24,
-                                    height=14
-                                ),
-                                ft.Text(
-                                    value=APP_VERSION,
-                                    weight=ft.FontWeight.BOLD,
-                                    font_family="Monospace",
-                                    text_align="center",
-                                    size=13
-                                )
-                            ]
-                        ),
-                        alignment=ft.alignment.center
+                        alignment=ft.alignment.center,
+                        margin=ft.margin.only(right=10, bottom=10, left=10),
+                        content=ft.Text(
+                            value=APP_VERSION,
+                            weight=ft.FontWeight.BOLD,
+                            font_family="Monospace",
+                            text_align="center",
+                            size=13
+                        )
                     )
                 ]
             )

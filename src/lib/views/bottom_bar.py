@@ -17,6 +17,7 @@ class BottomAppBar(ft.BottomAppBar):
         self.notch_margin = 8
         self.shape = ft.NotchShape.CIRCULAR
         self.padding = ft.padding.only(left=10, right=10)
+
         self.content = ft.Row(
             controls=[
                 ft.IconButton(

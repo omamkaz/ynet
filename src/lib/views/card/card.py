@@ -6,7 +6,7 @@ import requests
 
 from .item import CardItem
 from .credit import CardCredit
-from .list_tile import CardTitle
+from .title import CardTitle
 from ...models.user import User
 from ...constant import ThemeController, Refs, Dialogs, Platform
  
@@ -58,7 +58,7 @@ class Card(ft.GestureDetector):
                 )
             )
 
-        self.card_title.leading.controls[0].on_click = lambda e: self._on_pan_end()
+        self.card_title.content.controls[0].controls[0].on_click = lambda e: self._on_pan_end()
 
     def set_card_items(self, data: dict[str, str]) -> None:
         self.card_items.current.controls.clear()
@@ -129,7 +129,7 @@ class Card(ft.GestureDetector):
     def set_loading(self, on: bool) -> None:
         self.card_title.toggle_loading_mode(on)
         self.page.views[0].disabled = on
-        self.card_title.leading.update()
+        self.card_title.content.controls[0].update()
         self.page.update()
 
     def is_loading(self) -> bool:
