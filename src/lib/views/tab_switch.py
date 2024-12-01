@@ -15,6 +15,8 @@ class TabSwitch(ft.Container):
 
         self.page = page
 
+        self.padding = ft.padding.only(left=10, right=10)
+
         store_value: int | None = self.page.client_storage.get("tab_switch")
         self.value = store_value if store_value is not None else initial_value
 

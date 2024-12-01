@@ -5,8 +5,8 @@ import flet as ft
 import requests
 
 from .item import CardItem
-from .credit import CardCredit
 from .title import CardTitle
+from .credit import CardCredit
 from ...models.user import User
 from ...constant import ThemeController, Refs, Dialogs, Platform
  

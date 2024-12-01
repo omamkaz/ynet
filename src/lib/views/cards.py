@@ -19,7 +19,7 @@ class Cards(ft.Stack):
             ft.Container(
                 content=ft.Lottie(
                     fit=ft.ImageFit.COVER,
-                    src=LottieFiles.online_health_report
+                    src_base64=LottieFiles.online_health_report
                 ),
                 alignment=ft.alignment.center,
                 on_click=lambda e: self.open_new_user_dialog(self.page)
@@ -27,7 +27,7 @@ class Cards(ft.Stack):
             ft.Container(
                 content=ft.Lottie(
                     fit=ft.ImageFit.COVER,
-                    src=LottieFiles.pin_required
+                    src_base64=LottieFiles.pin_required
                 ),
                 alignment=ft.alignment.center,
                 on_click=self.on_verify_click
