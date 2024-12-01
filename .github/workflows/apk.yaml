@@ -78,9 +78,6 @@ jobs:
 
     - name: Flet Build APK
       run: |
-        echo "App Path: $(pwd)"
-        echo "dir content"
-        ls -la
         flutter doctor
         flutter config --no-analytics
         flet build apk \
