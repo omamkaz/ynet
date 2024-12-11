@@ -32,9 +32,9 @@ class CardTitle(ft.Container):
                             fit=ft.ImageFit.COVER
                         )
                     ],
-                    expand=False,
                     width=48,
-                    height=48
+                    height=48,
+                    expand=False
                 ),
 
                 ft.Column(
@@ -51,7 +51,8 @@ class CardTitle(ft.Container):
                         )
                     ],
                     expand=True,
-                    horizontal_alignment=ft.CrossAxisAlignment.END
+                    horizontal_alignment=ft.CrossAxisAlignment.END,
+                    spacing=0
                 ),
 
                 ft.Image(

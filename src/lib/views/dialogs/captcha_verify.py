@@ -79,11 +79,11 @@ class CaptchaVerifyDialog(ft.BottomSheet):
         self.set_captcha_image(self.isp.fetch_captcha())
         self.page.open(self)
 
-    def on_refresh(self, e: ft.ControlEvent):
+    def on_refresh(self, e: ft.ControlEvent = None):
         self.set_captcha_image(self.isp.fetch_captcha())
         self.update()
 
-    def on_submit(self, e: ft.ControlEvent):
+    def on_submit(self, e: ft.ControlEvent = None):
         try:
             data, err = self.isp.verify(self.captcha_value.value)
             if err is not None:
@@ -92,9 +92,9 @@ class CaptchaVerifyDialog(ft.BottomSheet):
             else:
                 self.callback(data)
                 self.close()
+        except requests.exceptions.Timeout:
+            Dialogs.connection_timeout(self.page)
         except requests.exceptions.ConnectionError:
-            # No Internet Connection
             Dialogs.no_internet_connection(self.page)
         except Exception as err:
-            # Unknow Error!
             Dialogs.error(err, self.page)

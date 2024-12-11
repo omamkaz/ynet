@@ -49,16 +49,20 @@ class TabSwitch(ft.Container):
                     )
                 ]
             ),
-            bgcolor=self.page.theme.color_scheme_seed if active else None,
-            border_radius=8,
-            alignment=ft.alignment.center,
             padding=5,
+            border_radius=12,
+            bgcolor=self.get_bgcolor(active),
+            alignment=ft.alignment.center,
             animate=ft.animation.Animation(
                 duration=300, 
                 curve=ft.AnimationCurve.DECELERATE
             ),
-            on_click=self.toggle_switch
+            on_click=self.toggle_switch,
+            data=active
         )
+
+    def get_bgcolor(self, active: bool) -> str:
+        return (self.page.theme.color_scheme_seed if active else None)
 
     def toggle_switch(self, e):
         """Switch to the tab that was clicked and update its appearance."""
@@ -69,16 +73,11 @@ class TabSwitch(ft.Container):
             self.value = new_active_index
 
             self.page.client_storage.set("tab_switch", new_active_index)
-            self.page.update()
 
             # Code to switch list account types
             Refs.users.current.update_list()
 
     def update_tab(self, tab, active):
         """Update the visual state of a tab."""
-        tab.bgcolor = (
-            self.page.theme.color_scheme_seed
-            if active
-            else None
-        )
+        tab.bgcolor = self.get_bgcolor(active)
         tab.update()

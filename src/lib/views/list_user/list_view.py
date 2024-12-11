@@ -39,10 +39,11 @@ class UserListView(ft.Column):
         tab_switch = self.page.client_storage.get("tab_switch")
         for index, user in enumerate(User.get_users(), 1):
             self.controls.append(
-                self.new_item(index, 
+                self.new_item(index,
                               user, 
                               tab_switch if tab_switch is not None else 0)
             )
+        self.set_selected_item(self.page.client_storage.get("cur_user"))
         self.update()
 
     def set_selected_item(self, control: UserListTile | int) -> None:

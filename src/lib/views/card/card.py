@@ -27,7 +27,6 @@ class Card(ft.GestureDetector):
         self.on_pan_end = self._on_pan_end
         self.on_pan_update = self._on_pan_update
 
-
         self.content = ft.Container(
                 expand=True,
                 padding=0,
@@ -87,11 +86,11 @@ class Card(ft.GestureDetector):
             self.login_web()
         except AttributeError:
             self.start_captcha_verify()
+        except requests.exceptions.Timeout:
+            Dialogs.connection_timeout(self.page)
         except requests.exceptions.ConnectionError:
-            # No Internet Connection
             Dialogs.no_internet_connection(self.page)
         except Exception as err:
-            # Unknow Error!
             Dialogs.error(err, self.page)
 
         self.set_loading(False)
@@ -113,6 +112,10 @@ class Card(ft.GestureDetector):
 
         Refs.users.current.update()
 
+        # Captcha verify time
+        from datetime import datetime
+        print("Now: ", datetime.now().timestamp())
+
     def _on_pan_update(self, e: ft.DragUpdateEvent) -> None:
         if self.content.margin.top < (25 + 8) and e.delta_y >= 0:
             self.content.margin.top += min(0.8, e.delta_y) * 5
@@ -127,9 +130,9 @@ class Card(ft.GestureDetector):
         self.content.update()
 
     def set_loading(self, on: bool) -> None:
-        self.card_title.toggle_loading_mode(on)
         self.page.views[0].disabled = on
         self.card_title.content.controls[0].update()
+        self.card_title.toggle_loading_mode(on)
         self.page.update()
 
     def is_loading(self) -> bool:

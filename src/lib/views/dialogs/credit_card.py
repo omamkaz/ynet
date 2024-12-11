@@ -82,6 +82,10 @@ class CreditCardDialog(ft.BottomSheet):
         self.page.open(self)
 
     def on_submit(self, e: ft.ControlEvent = None):
+        # reset err msg if exists
+        self.msg_label.current.value = None
+        self.msg_label.current.update()
+
         fields = self.content.content.controls[0].controls
         if not fields[0].value:
             return
@@ -93,9 +97,9 @@ class CreditCardDialog(ft.BottomSheet):
                 self.msg_label.current.update()
             else:
                 self.close()
+        except requests.exceptions.Timeout:
+            Dialogs.connection_timeout(self.page)
         except requests.exceptions.ConnectionError:
-            # No Internet Connection
             Dialogs.no_internet_connection(self.page)
         except Exception as err:
-            # Unknow Error!
             Dialogs.error(err, self.page)

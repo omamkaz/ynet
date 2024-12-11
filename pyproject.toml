@@ -1,7 +1,6 @@
-
 [tool.poetry]
 name = "ynet"
-version = "10.0.0"
+version = "12.0.0"
 description = "Yemen Net Internet Services"
 authors = ["Osama Mohammed <omamkaz@gmail.com>"]
 readme = "README.md"
@@ -27,14 +26,14 @@ path = "src"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-flet = {version = "0.25.0", markers = ""}
-bs4 = {version = "0.0.2", markers = ""}
-requests = {version = "2.32.3", markers = ""}
-humanize = {version = "4.10.0", markers = ""}
-pydal = {version = "20240906.1", markers = ""}
+flet = {version = "0.25.1"}
+bs4 = {version = "0.0.2"}
+requests = {version = "2.32.3"}
+humanize = {version = "4.10.0"}
+pydal = {version = "20241201.2"}
 
 [tool.poetry.group.dev.dependencies]
-flet = {extras = ["all"], version = "0.25.0", markers = ""}
+flet = {extras = ["all"], version = "0.25.1"}
 
 [build-system]
 requires = ["poetry-core"]

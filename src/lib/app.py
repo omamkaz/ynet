@@ -14,6 +14,7 @@ class Application:
     def on_close_window(self, e = None):
         size: list[int] = [self.page.window.width, self.page.window.height]
         self.page.client_storage.set("size", size)
+        self.page.update()
 
     def set_current_user(self) -> None:
         cur_user_index: int = self.page.client_storage.get("cur_user") or 0
@@ -47,14 +48,14 @@ class Application:
         if Platform.is_desktop(page):
             page.on_close = self.on_close_window
 
-            page.window.min_width = 330
+            page.window.min_width = 360
             page.window.min_height = 600
 
             page.window.max_width = 600
             page.window.max_height = 700
 
-            if page.client_storage.contains_key("size"):
-                page.window.width, page.window.height = page.client_storage.get("size")
+            size = page.client_storage.get("size") if page.client_storage.contains_key("size") else (360, 630)
+            page.window.width, page.window.height = size
 
         page.bottom_appbar = BottomAppBar(page)
         page.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
