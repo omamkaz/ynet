@@ -33,7 +33,7 @@ humanize = {version = "4.10.0"}
 pydal = {version = "20241201.2"}
 
 [tool.poetry.group.dev.dependencies]
-flet = {extras = ["all"], version = "0.25.1"}
+flet = {extras = ["all"], version = "0.26.0.dev3824"}
 
 [build-system]
 requires = ["poetry-core"]
