@@ -5,8 +5,8 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1733068381
-  BUILD_VERSION: 11.0.0
+  BUILD_NUMBER: 1733951701
+  BUILD_VERSION: 12.0.0
   PYTHON_VERSION: 3.12.5
   FLUTTER_VERSION: 3.24.3
   # ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
@@ -97,7 +97,7 @@ jobs:
         --arch=arm64-v8a \
         --flutter-build-args=--release \
         --flutter-build-args=--target-platform \
-        --flutter-build-args=android-arm64
+        --flutter-build-args=android-arm64,android-arm
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
