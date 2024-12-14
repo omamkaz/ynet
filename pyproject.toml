@@ -2,7 +2,7 @@
 name = "ynet"
 version = "12.0.0"
 description = "Yemen Net Internet Services"
-authors = ["Osama Mohammed Alzabidi <omamkaz@gmail.com>"]
+authors = ["Osama Mohammed <omamkaz@gmail.com>"]
 readme = "README.md"
 
 
@@ -21,10 +21,26 @@ company = "omamkaz"
 # copyright text to display in about app dialogs
 copyright = "Copyright (C) 2024 by omamkaz"
 
-build_number = 1
+
+build_number = 1734204781
+build_arch = "arm64"
+flutter.dependencies = ["flet_lottie"]
+
+
+[tool.flet.compile]
+app = true
+packages = true
+cleanup = true
+
+
+[tool.flet.android]
+adaptive_icon_background = "#3032FF"
+split_per_abi = true
+
 
 [tool.flet.app]
 path = "src"
+
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -34,11 +50,10 @@ requests = {version = "2.32.3", markers = ""}
 humanize = {version = "4.10.0", markers = ""}
 pydal = {version = "20241201.2", markers = ""}
 
+
 [tool.poetry.group.dev.dependencies]
 flet = {extras = ["all"], version = "0.25.1", markers = ""}
 
-[tool.flet.flutter.pubspec.dependency_overrides]
-file_picker = "8.1.4"
 
 [build-system]
 requires = ["poetry-core"]
