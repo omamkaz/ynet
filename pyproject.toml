@@ -21,6 +21,8 @@ company = "omamkaz"
 # copyright text to display in about app dialogs
 copyright = "Copyright (C) 2024 by omamkaz"
 
+build_number = 1
+
 [tool.flet.app]
 path = "src"
 
