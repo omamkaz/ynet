@@ -35,6 +35,9 @@ pydal = {version = "20241201.2", markers = ""}
 [tool.poetry.group.dev.dependencies]
 flet = {extras = ["all"], version = "0.25.1", markers = ""}
 
+[tool.flet.flutter.pubspec.dependency_overrides]
+file_picker = "8.1.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
