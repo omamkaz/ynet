@@ -5,17 +5,8 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1734101761
-  BUILD_VERSION: 12.0.0
   PYTHON_VERSION: 3.12.5
   FLUTTER_VERSION: 3.24.3
-
-  # app build details
-  PROJECT: ynet
-  COMPANY_NAME: omamkaz
-  ORG_NAME: com.omamkaz
-  PRODUCT: ynet
-  DESCRIPTION: Yemen Net Internet Services
 
 jobs:
   build-apk:
@@ -86,13 +77,6 @@ jobs:
         --cleanup-on-compile \
         --android-adaptive-icon-background="#ffffff" \
         --include-packages flet_lottie \
-        --build-number="$BUILD_NUMBER" \
-        --build-version="$BUILD_VERSION" \
-        --company="$COMPANY_NAME" \
-        --org="$ORG_NAME" \
-        --product="$PRODUCT" \
-        --description="$DESCRIPTION" \
-        --project="$PROJECT" \
         --arch=arm64-v8a
 
     - name: Upload APK Artifact
