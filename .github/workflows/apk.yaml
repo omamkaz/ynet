@@ -6,7 +6,7 @@ on:
 env:
   # https://flet.dev/docs/publish#versioning
   PYTHON_VERSION: 3.12.5
-  FLUTTER_VERSION: 3.24.3
+  FLUTTER_VERSION: 3.27.0 #3.24.3
 
 jobs:
   build-apk:
@@ -70,7 +70,7 @@ jobs:
       run: |
         flutter doctor
         flutter config --no-analytics
-        flet build apk --verbose 
+        flet build apk --verbose
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
