@@ -2,7 +2,7 @@
 name = "ynet"
 version = "12.0.0"
 description = "Yemen Net Internet Services"
-authors = ["Osama Mohammed Alzabidi <omamkaz@gmail.com>"]
+authors = ["Osama Mohammed <omamkaz@gmail.com>"]
 readme = "README.md"
 
 
@@ -21,9 +21,10 @@ company = "omamkaz"
 # copyright text to display in about app dialogs
 copyright = "Copyright (C) 2024 by omamkaz"
 
-
 build_number = 1734204781
+
 build_arch = "arm64"
+
 flutter.dependencies = ["flet_lottie"]
 
 
@@ -53,6 +54,10 @@ pydal = {version = "20241201.2"}
 
 [tool.poetry.group.dev.dependencies]
 flet = {extras = ["all"], version = "0.25.2"}
+
+
+[tool.flet.flutter.pubspec.dependency_overrides]
+file_picker = "8.1.4"
 
 
 [build-system]
