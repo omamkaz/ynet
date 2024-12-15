@@ -6,7 +6,7 @@ on:
 env:
   # https://flet.dev/docs/publish#versioning
   PYTHON_VERSION: 3.12.5
-  FLUTTER_VERSION: 3.27.0 #3.24.3
+  FLUTTER_VERSION: 3.24.3
 
 jobs:
   build-apk:
