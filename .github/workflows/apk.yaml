@@ -43,7 +43,6 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        # architecture: 'x64'
 
     - name: Setup Python Environment and Install Dependencies
       run: |
@@ -55,7 +54,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-        #architecture: 'aarch64'
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
@@ -70,12 +68,12 @@ jobs:
       run: |
         flutter doctor
         flutter config --no-analytics
-        flet build aab --verbose --arch=arm64
+        flet build apk --verbose
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        path: build/aab
-        name: aab-build-artifact
+        path: build/apk
+        name: apk-build-artifact
         if-no-files-found: warn
         overwrite: false
