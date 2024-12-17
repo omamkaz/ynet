@@ -23,7 +23,7 @@ copyright = "Copyright (C) 2024 by omamkaz"
 
 build_number = 1734469741
 
-build_arch = ["armeabi-v7a"]
+build_arch = ["armeabi-v7a","arm64-v8a"]
 
 flutter.dependencies = ["flet_lottie"]
 
