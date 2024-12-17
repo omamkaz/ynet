@@ -21,7 +21,7 @@ company = "omamkaz"
 # copyright text to display in about app dialogs
 copyright = "Copyright (C) 2024 by omamkaz"
 
-build_number = 1734204781
+build_number = 1734469741
 
 build_arch = ["armeabi-v7a"]
 
