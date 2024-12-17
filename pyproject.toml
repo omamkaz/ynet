@@ -21,11 +21,12 @@ company = "omamkaz"
 # copyright text to display in about app dialogs
 copyright = "Copyright (C) 2024 by omamkaz"
 
-build_number = 1734469741
+build_number = 1734472921
 
-build_arch = ["armeabi-v7a","arm64-v8a"]
 
-flutter.dependencies = ["flet_lottie"]
+[tool.flet.flutter]
+build_args = ["--release", "--analyze-size", "--target-platform", "android-arm"]
+dependencies = ["flet_lottie"]
 
 
 [tool.flet.compile]
@@ -37,6 +38,7 @@ cleanup = true
 [tool.flet.android]
 split_per_abi = true
 adaptive_icon_background = "#3032FF"
+build_arch = "armeabi-v7a"
 
 
 [tool.flet.app]
