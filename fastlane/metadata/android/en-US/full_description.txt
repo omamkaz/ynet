@@ -1,0 +1,11 @@
+Ynet is a mobile application designed to provide users with comprehensive access to Yemen Net Internet Services. the app offers a user-friendly interface for managing various aspects of internet services provided by Yemen Net.
+
+Key Features:
+
+    Account Management: Users can view and manage their Yemen Net account details, including subscription status, data usage, and billing information.
+
+    Service Monitoring: The app provides real-time monitoring of internet connectivity.
+
+    Payment Integration: Ynet facilitates seamless payment of bills through integrated payment gateways, ensuring uninterrupted internet services.
+
+    License: Ynet is released under the GPL-3.0 license, allowing for open-source distribution and modification.
