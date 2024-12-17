@@ -21,22 +21,31 @@ class ThemeColorButtonGroup(ft.Row):
         self.controls = [
             ft.Container(
                 key=color,
-                width=38,
-                height=38,
+                width=42,
+                height=42,
                 bgcolor=color,
                 on_click=self._on_click,
                 shape=ft.BoxShape.CIRCLE,
-                border=None if color != value else ft.border.all(3, value + "100")
+                border=None if color != value else self.get_border(value),
+                content=None if color!= value else self.get_icon(value)
             )
             for color in colors
         ]
 
+    def get_border(self, color: str) -> ft.border:
+        return ft.border.all(3, color + "100")
+
+    def get_icon(self, color: str) -> ft.Icon:
+        return ft.Icon(ft.Icons.CHECK, color=color+"900")
+
     def select_color(self, color: str) -> None:
-        for i, c in enumerate(self.controls):
-            if i <= len(self.controls) - 1:
-                c.border = None if c.key != color else ft.border.all(3, c.bgcolor + "100")
+        for c in self.controls:
+            if c.key != color:
+                c.content = c.border = None
             else:
-                c.border = ft.border.all(3, ft.Colors.BLACK12)
+                c.content = self.get_icon(color)
+                c.border = self.get_border(color)
+
         self.update()
 
     def _on_click(self, e: ft.ControlEvent) -> None:

@@ -52,9 +52,9 @@ class Application:
             page.window.min_height = 600
 
             page.window.max_width = 600
-            page.window.max_height = 700
+            page.window.max_height = 750
 
-            size = page.client_storage.get("size") if page.client_storage.contains_key("size") else (360, 630)
+            size = page.client_storage.get("size") if page.client_storage.contains_key("size") else (360, 700)
             page.window.width, page.window.height = size
 
         page.bottom_appbar = BottomAppBar(page)
@@ -80,7 +80,11 @@ class Application:
                                     margin=0,
                                     height=250,
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
-                                    bgcolor=page.theme.color_scheme_seed
+                                    bgcolor=page.theme.color_scheme_seed,
+                                    content=ft.Text(
+                                        value = "اسحب للاسفل للتحديث"
+                                    ),
+                                    alignment=ft.alignment.top_center
                                 ),
                                 Cards(page, ref=Refs.cards)
                             ]

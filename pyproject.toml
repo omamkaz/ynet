@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ynet"
-version = "12.0.0"
+version = "13.0.0"
 description = "Yemen Net Internet Services"
 authors = ["Osama Mohammed <omamkaz@gmail.com>"]
 readme = "README.md"
@@ -23,7 +23,7 @@ copyright = "Copyright (C) 2024 by omamkaz"
 
 build_number = 1734204781
 
-build_arch = "arm64"
+build_arch = ["armeabi-v7a"]
 
 flutter.dependencies = ["flet_lottie"]
 
@@ -35,12 +35,13 @@ cleanup = true
 
 
 [tool.flet.android]
-adaptive_icon_background = "#3032FF"
 split_per_abi = true
+adaptive_icon_background = "#3032FF"
 
 
 [tool.flet.app]
 path = "src"
+exclude = ["media", "assets/animations"]
 
 
 [tool.poetry.dependencies]
