@@ -21,7 +21,7 @@ company = "omamkaz"
 # copyright text to display in about app dialogs
 copyright = "Copyright (C) 2024 by omamkaz"
 
-build_number = 1734472921
+build_number = 13
 
 
 [tool.flet.flutter]
@@ -43,7 +43,7 @@ adaptive_icon_background = "#3032FF"
 
 [tool.flet.app]
 path = "src"
-exclude = ["media", "assets/animations"]
+exclude = ["media", "assets/animations", "fastlane"]
 
 
 [tool.poetry.dependencies]
