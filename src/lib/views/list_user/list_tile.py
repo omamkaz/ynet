@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
+
 from ...constant import Refs
 from ...models.user import User
 from ..dialogs import EditUserDialog

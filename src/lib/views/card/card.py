@@ -34,7 +34,7 @@ class Card(ft.GestureDetector):
                 height=self.card_height,
                 alignment=ft.alignment.center,
                 margin=ft.margin.only(left=14, right=14, top=25),
-                animate=ft.Animation(200, ft.AnimationCurve.LINEAR_TO_EASE_OUT),
+                animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
                 bgcolor=ThemeController.get_color(self.page.theme.color_scheme_seed, 800),
                 shadow=ft.BoxShadow(
                     spread_radius=-10,
@@ -111,10 +111,6 @@ class Card(ft.GestureDetector):
             c.set_verified(User.get_user(c.data).data is not None)
 
         Refs.users.current.update()
-
-        # Captcha verify time
-        from datetime import datetime
-        print("Now: ", datetime.now().timestamp())
 
     def _on_pan_update(self, e: ft.DragUpdateEvent) -> None:
         if self.content.margin.top < (25 + 8) and e.delta_y >= 0:

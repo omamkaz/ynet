@@ -47,10 +47,12 @@ class UserListView(ft.Column):
         self.update()
 
     def update_body(self) -> bool:
+        check: bool = False
         if self.controls:
-            check: bool = any(c.visible for c in self.controls)
-            Refs.body.current.controls[1].visible = not check
-            Refs.body.current.update()
+            check = any(c.visible for c in self.controls)
+
+        Refs.body.current.controls[1].visible = not check
+        Refs.body.current.update()
 
     def set_selected_item(self, control: UserListTile | int) -> None:
         if self.controls:

@@ -48,7 +48,7 @@ class TabSwitch(ft.Container):
                         size=15,
                     ),
                     ft.Image(
-                        src=f"/atype/{index}.png",
+                        src=f"atype/{index}.png",
                         width=32,
                         height=32
                     )

@@ -16,6 +16,8 @@ class TextField(ft.TextField):
                  **kwargs):
         super().__init__(label=label, **kwargs)
 
+        self._required: bool = required
+
         self.page = page
 
         self.max_length = 32
@@ -28,13 +30,13 @@ class TextField(ft.TextField):
             visible=suffix_visible and not Platform.is_desktop(page)
         )
 
-        if required:
-            self.on_change = self.on_text_changed
-
+        self.on_change = self.on_text_changed
         self.counter_text = f"{len(self.value)}/{self.max_length}"
 
     def on_text_changed(self, e: ft.ControlEvent = None):
-        self.error_text = "هاذا الحقل مطلوب" if not self.value.strip() else None
+        if self._required:
+            self.error_text = "هاذا الحقل مطلوب" if not self.value.strip() else None
+
         self.counter_text = f"{len(self.value)}/{self.max_length}"
         self.update()
 
@@ -54,7 +56,7 @@ class DropdownOption(ft.dropdown.Option):
         self.content = ft.Row(
             controls=[
                 ft.Image(
-                    src=f"/atype/{index}.png",
+                    src=f"atype/{index}.png",
                     width=32,
                     height=32
                 ),
@@ -114,7 +116,7 @@ class UserDialog(ft.BottomSheet):
                         ref=self.logo,
                         width=64,
                         height=64,
-                        src="/atype/0.png"
+                        src="atype/0.png"
                     ),
                     ft.Row(
                         alignment=ft.MainAxisAlignment.CENTER,
@@ -178,7 +180,7 @@ class UserDialog(ft.BottomSheet):
         self.password.visible = (atype == 0)
 
         self.title.current.value = ACCOUNT_TYPES[atype]
-        self.logo.current.src = f"/atype/{atype}.png"
+        self.logo.current.src = f"atype/{atype}.png"
 
         self.username.value = "" if atype != 1 else "10"
 

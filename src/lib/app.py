@@ -18,10 +18,8 @@ class Application:
 
     def set_current_user(self) -> None:
         cur_user_index: int = self.page.client_storage.get("cur_user") or 0
-        if cur_user_index < 0 or not Refs.users.current.controls:
+        if not Refs.users.current.controls or cur_user_index < 0:
             Refs.cards.current.toggle_card(3)
-            Refs.body.current.controls[1].visible = False
-            Refs.body.current.update()
             return
 
         Refs.users.current.select_item(cur_user_index)
@@ -87,7 +85,11 @@ class Application:
                                     height=250,
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
                                     bgcolor=page.theme.color_scheme_seed,
-                                    content=ft.Text(value="اسحب للاسفل للتحديث"),
+                                    content=ft.Text(
+                                        value = "⭭ اسحب للأسفل للتحديث", 
+                                        size=11,
+                                        weight=ft.FontWeight.BOLD
+                                    ),
                                     alignment=ft.alignment.top_center,
                                 ),
                                 Cards(page, ref=Refs.cards),
@@ -98,18 +100,12 @@ class Application:
                             controls=[
                                 UserListView(page, ref=Refs.users),
                                 ft.Container(
-                                    # content=ft.Lottie(
-                                    #     fit=ft.ImageFit.COVER,
-                                    #     src_base64=LottieFiles.online_health_report,
-                                    # ),
                                     content=ft.Image(
                                         src="empty.png",
-                                        fit=ft.ImageFit.COVER,
                                         width=128 * 2,
                                         height=128 * 2
                                     ),
                                     alignment=ft.alignment.center,
-                                    on_click=lambda e: Cards.open_new_user_dialog(self.page),
                                     visible=not any(c.visible for c in Refs.users.current.controls)
                                 )
                             ],

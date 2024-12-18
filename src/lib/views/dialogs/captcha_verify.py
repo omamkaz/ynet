@@ -12,12 +12,14 @@ from ...scrapper import ADSL, Base
 
 
 class CaptchaVerifyDialog(ft.BottomSheet):
-    def __init__(self, 
-                 page: ft.Page,
-                 isp: Base | ADSL,
-                 callback: Callable, 
-                 captcha_len: int = 4,
-                 **kwargs):
+    def __init__(
+        self,
+        page: ft.Page,
+        isp: Base | ADSL,
+        callback: Callable,
+        captcha_len: int = 4,
+        **kwargs,
+    ):
         super().__init__(ft.Control, **kwargs)
 
         self.page = page
@@ -29,21 +31,18 @@ class CaptchaVerifyDialog(ft.BottomSheet):
         self.show_drag_handle = True
         self.is_scroll_controlled = True
 
-        self.captcha_image = ft.Image(
-            fit=ft.ImageFit.COVER
-        )
+        self.captcha_image = ft.Image(fit=ft.ImageFit.COVER)
 
         self.captcha_value = ft.TextField(
             input_filter=ft.InputFilter(r"^[0-9]*$"),
             text_align="center",
             max_length=captcha_len,
             autofocus=True,
-            suffix=ft.IconButton(
-                icon=ft.Icons.REFRESH,
-                on_click=self.on_refresh
-            ),
+            suffix=ft.IconButton(icon=ft.Icons.REFRESH, on_click=self.on_refresh),
             on_submit=self.on_submit,
-            keyboard_type=ft.KeyboardType.NUMBER
+            keyboard_type=ft.KeyboardType.NUMBER,
+            on_change=self.on_changed,
+            counter_text=f"0/{captcha_len}",
         )
 
         self.content = ft.SafeArea(
@@ -56,20 +55,21 @@ class CaptchaVerifyDialog(ft.BottomSheet):
                         alignment=ft.MainAxisAlignment.END,
                         controls=[
                             ft.ElevatedButton(
-                                text = "الغاء", 
-                                color = ft.Colors.RED,
-                                on_click=self.close
+                                text="الغاء", color=ft.Colors.RED, on_click=self.close
                             ),
-                            ft.ElevatedButton(
-                                text = "تحقق",
-                                on_click=self.on_submit
-                            )
-                        ]
-                    )
+                            ft.ElevatedButton(text="تحقق", on_click=self.on_submit),
+                        ],
+                    ),
                 ],
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER
-            )
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            ),
         )
+
+    def on_changed(self, e: ft.ControlEvent = None) -> None:
+        max_length: int = self.captcha_value.max_length
+        value_length: int = len(self.captcha_value.value)
+        self.captcha_value.counter_text = f"{value_length}/{max_length}"
+        self.captcha_value.update()
 
     def close(self, e: ft.ControlEvent = None):
         self.page.close(self)
