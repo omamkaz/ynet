@@ -37,7 +37,7 @@ cleanup = true
 
 [tool.flet.android]
 split_per_abi = true
-build_arch = "arm64-v8a"
+build_arch = "armeabi-v7a" # arm64-v8a
 adaptive_icon_background = "#3032FF"
 
 
