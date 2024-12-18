@@ -3,16 +3,16 @@
 
 import flet as ft
 
+from .constant import Platform, Refs, ThemeController
+from .views.bottom_bar import BottomAppBar
 from .views.cards import Cards
 from .views.list_user import UserListView
-from .views.bottom_bar import BottomAppBar
 from .views.tab_switch import TabSwitch
-from .constant import Refs, ThemeController, Platform
 
 
 class Application:
-    def on_close_window(self, e = None):
-        size: list[int] = [self.page.window.width, self.page.window.height]
+    def on_close_window(self, e=None):
+        size: tuple[int] = self.page.window.width, self.page.window.height
         self.page.client_storage.set("size", size)
         self.page.update()
 
@@ -20,6 +20,8 @@ class Application:
         cur_user_index: int = self.page.client_storage.get("cur_user") or 0
         if cur_user_index < 0 or not Refs.users.current.controls:
             Refs.cards.current.toggle_card(3)
+            Refs.body.current.controls[1].visible = False
+            Refs.body.current.update()
             return
 
         Refs.users.current.select_item(cur_user_index)
@@ -34,11 +36,9 @@ class Application:
         page.horizontal_alignment = page.vertical_alignment = "center"
 
         page.title = "ynet"
-        page.window.icon = "/icon.png"
+        page.window.icon = "icon.png"
         page.theme_mode = ThemeController.get_theme_mode(page)
-        page.fonts = {
-            "linaround": "/fonts/linaround_regular.otf"
-        }
+        page.fonts = {"linaround": "fonts/linaround_regular.otf"}
 
         ThemeController.set_theme_color(ThemeController.get_theme_color(page), page)
 
@@ -54,15 +54,21 @@ class Application:
             page.window.max_width = 600
             page.window.max_height = 750
 
-            size = page.client_storage.get("size") if page.client_storage.contains_key("size") else (360, 700)
+            size = (
+                page.client_storage.get("size")
+                if page.client_storage.contains_key("size")
+                else (360, 700)
+            )
             page.window.width, page.window.height = size
 
         page.bottom_appbar = BottomAppBar(page)
-        page.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
+        page.floating_action_button_location = (
+            ft.FloatingActionButtonLocation.CENTER_DOCKED
+        )
         page.floating_action_button = ft.FloatingActionButton(
             mini=True,
             icon=ft.Icons.ADD,
-            on_click=lambda e: Cards.open_new_user_dialog(page)
+            on_click=lambda e: Cards.open_new_user_dialog(page),
         )
 
         page.add(
@@ -76,23 +82,42 @@ class Application:
                         ft.Stack(
                             controls=[
                                 ft.Container(
-                                    padding=0,
+                                    padding=ft.padding.only(top=5),
                                     margin=0,
                                     height=250,
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
                                     bgcolor=page.theme.color_scheme_seed,
-                                    content=ft.Text(
-                                        value = "اسحب للاسفل للتحديث"
-                                    ),
-                                    alignment=ft.alignment.top_center
+                                    content=ft.Text(value="اسحب للاسفل للتحديث"),
+                                    alignment=ft.alignment.top_center,
                                 ),
-                                Cards(page, ref=Refs.cards)
+                                Cards(page, ref=Refs.cards),
                             ]
                         ),
                         TabSwitch(page),
-                        UserListView(page, ref=Refs.users)
-                    ]
-                )
+                        ft.Stack(
+                            controls=[
+                                UserListView(page, ref=Refs.users),
+                                ft.Container(
+                                    # content=ft.Lottie(
+                                    #     fit=ft.ImageFit.COVER,
+                                    #     src_base64=LottieFiles.online_health_report,
+                                    # ),
+                                    content=ft.Image(
+                                        src="empty.png",
+                                        fit=ft.ImageFit.COVER,
+                                        width=128 * 2,
+                                        height=128 * 2
+                                    ),
+                                    alignment=ft.alignment.center,
+                                    on_click=lambda e: Cards.open_new_user_dialog(self.page),
+                                    visible=not any(c.visible for c in Refs.users.current.controls)
+                                )
+                            ],
+                            ref=Refs.body,
+                            expand=True,
+                        ),
+                    ],
+                ),
             )
         )
 

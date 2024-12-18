@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from ..card import Card
+
 from ....scrapper import Phone
 from ...dialogs import CaptchaVerifyDialog
+from ..card import Card
 
 
 class PhoneCard(Card):

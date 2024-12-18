@@ -2,24 +2,29 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from ..constant import Refs, ACCOUNT_TYPES
+
+from ..constant import ACCOUNT_TYPES, Refs
 
 
 class TabSwitch(ft.Container):
     def __init__(
         self,
         page: ft.Page,
-        initial_value=0,
+        initial_value = 0,
         **kwargs):
         super().__init__(**kwargs)
 
         self.page = page
 
         self.padding = ft.padding.only(left=10, right=10)
+        
+        # if Refs.users.current.controls:
+        #     index = self.page.client_storage.get("cur_user") or 0
+        #     control = Refs.users.current.controls[index]
+        #     self.value = control._atype
+        # else:
 
-        store_value: int | None = self.page.client_storage.get("tab_switch")
-        self.value = store_value if store_value is not None else initial_value
-
+        self.value = self.page.client_storage.get("tab_switch") or initial_value
         self.tabs = [
             self.get_container(index, label, index == self.value)
             for index, label in enumerate(ACCOUNT_TYPES)
@@ -70,8 +75,8 @@ class TabSwitch(ft.Container):
         if new_active_index != self.value:
             self.update_tab(self.tabs[self.value], False)
             self.update_tab(self.tabs[new_active_index], True)
-            self.value = new_active_index
 
+            self.value = new_active_index
             self.page.client_storage.set("tab_switch", new_active_index)
 
             # Code to switch list account types

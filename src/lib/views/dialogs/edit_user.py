@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from .user import UserDialog
-from ...models.user import User
+
 from ...constant import ACCOUNT_TYPES, Dialogs
+from ...models.user import User
+from .user import UserDialog
 
 
 class EditUserDialog(UserDialog):

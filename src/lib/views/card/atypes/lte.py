@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from ..card import Card
-from ....scrapper import LTE
+
 from ....constant import UserData
+from ....scrapper import LTE
 from ...dialogs import CaptchaVerifyDialog
+from ..card import Card
 
 
 class LTECard(Card):

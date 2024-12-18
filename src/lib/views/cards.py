@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from .dialogs import NewUserDialog
-from .card import Card, ADSLCard, LTECard, PhoneCard
+
 from ..constant import LottieFiles, Refs
+from .card import ADSLCard, Card, LTECard, PhoneCard
+from .dialogs import NewUserDialog
 
 
 class Cards(ft.Stack):
@@ -19,7 +20,8 @@ class Cards(ft.Stack):
             ft.Container(
                 content=ft.Lottie(
                     fit=ft.ImageFit.COVER,
-                    src_base64=LottieFiles.online_health_report
+                    src=LottieFiles.online_health_report
+                    # src_base64=LottieFiles.online_health_report
                 ),
                 alignment=ft.alignment.center,
                 on_click=lambda e: self.open_new_user_dialog(self.page)
@@ -27,7 +29,8 @@ class Cards(ft.Stack):
             ft.Container(
                 content=ft.Lottie(
                     fit=ft.ImageFit.COVER,
-                    src_base64=LottieFiles.pin_required
+                    src=LottieFiles.pin_required
+                    # src_base64=LottieFiles.pin_required
                 ),
                 alignment=ft.alignment.center,
                 on_click=self.on_verify_click

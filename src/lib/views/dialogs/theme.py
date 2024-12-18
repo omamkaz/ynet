@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import flet as ft
 from typing import Callable, Sequence
+
+import flet as ft
+
 from ...constant import THEME_COLORS, ThemeController
 
 

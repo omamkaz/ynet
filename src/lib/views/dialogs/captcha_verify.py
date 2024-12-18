@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import base64
-import requests
-import flet as ft
 from typing import Callable
+
+import flet as ft
+import requests
+
 from ...constant import Dialogs
-from ...scrapper import Base, ADSL
+from ...scrapper import ADSL, Base
 
 
 class CaptchaVerifyDialog(ft.BottomSheet):

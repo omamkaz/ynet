@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from ..card import Card
-from ....scrapper import ADSL
-from ....models.user import User
+
 from ....constant import UserData
+from ....models.user import User
+from ....scrapper import ADSL
 from ...dialogs import CaptchaVerifyDialog
+from ..card import Card
 
 
 class ADSLCard(Card):

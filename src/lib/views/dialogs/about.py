@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
+
 from ...constant import ABOUT_LINK_ICONS, APP_VERSION
 
 

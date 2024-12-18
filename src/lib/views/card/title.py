@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
+
 from ...constant import LottieFiles, Platform
 
 
@@ -27,7 +28,8 @@ class CardTitle(ft.Container):
                         ),
                         ft.Lottie(
                             ref=self.loading_mode,
-                            src_base64=LottieFiles.down_arrow,
+                            src=LottieFiles.down_arrow,
+                            # src_base64=LottieFiles.down_arrow,
                             visible=not Platform.is_desktop(self.page),
                             fit=ft.ImageFit.COVER
                         )
@@ -73,7 +75,8 @@ class CardTitle(ft.Container):
 
     def toggle_loading_mode(self, on: bool) -> None:
         self.loading_mode.current.visible = True
-        self.loading_mode.current.src_base64 = LottieFiles.loading_carga if on else LottieFiles.down_arrow
+        self.loading_mode.current.src = LottieFiles.loading_carga if on else LottieFiles.down_arrow
+        # self.loading_mode.current.src_base64 = LottieFiles.loading_carga if on else LottieFiles.down_arrow
 
         if Platform.is_desktop(self.page):
             self.content.controls[0].controls[0].visible = not on

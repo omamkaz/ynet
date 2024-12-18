@@ -4,12 +4,12 @@
 import flet as ft
 import requests
 
+from ...constant import Dialogs, Platform, Refs, ThemeController
+from ...models.user import User
+from .credit import CardCredit
 from .item import CardItem
 from .title import CardTitle
-from .credit import CardCredit
-from ...models.user import User
-from ...constant import ThemeController, Refs, Dialogs, Platform
- 
+
 
 class Card(ft.GestureDetector):
     _user_id: int = None

@@ -43,7 +43,7 @@ adaptive_icon_background = "#3032FF"
 
 [tool.flet.app]
 path = "src"
-exclude = ["media", "assets/animations", "fastlane"]
+exclude = ["media", "fastlane"] # "assets/animations"
 
 
 [tool.poetry.dependencies]

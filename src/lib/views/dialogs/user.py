@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from ...constant import Refs, ACCOUNT_TYPES, Platform
+
+from ...constant import ACCOUNT_TYPES, Platform, Refs
 
 
 class TextField(ft.TextField):
@@ -30,8 +31,11 @@ class TextField(ft.TextField):
         if required:
             self.on_change = self.on_text_changed
 
+        self.counter_text = f"{len(self.value)}/{self.max_length}"
+
     def on_text_changed(self, e: ft.ControlEvent = None):
         self.error_text = "هاذا الحقل مطلوب" if not self.value.strip() else None
+        self.counter_text = f"{len(self.value)}/{self.max_length}"
         self.update()
 
     def change_input_type(self, e: ft.ControlEvent = None):
@@ -169,6 +173,8 @@ class UserDialog(ft.BottomSheet):
         self.close()
 
     def _change_account_type(self, atype: int) -> None:
+        self.drop_down.current.value = atype
+
         self.password.visible = (atype == 0)
 
         self.title.current.value = ACCOUNT_TYPES[atype]
