@@ -12,11 +12,12 @@ class User:
     @staticmethod
     def add_user(
         atype: int,
-        username: str, 
-        password: str = None, 
+        username: str,
+        password: str = None,
         dname: str = None,
-        data: dict[str, str] = None, 
-        cookies: dict[str, str] = None):
+        data: dict[str, str] = None,
+        cookies: dict[str, str] = None,
+    ):
 
         user_id = DBEngine.db.users.insert(
             atype=atype,
@@ -24,27 +25,26 @@ class User:
             password=None if atype != 0 else (password or "123456"),
             dname=dname,
             data=data,
-            cookies=cookies
+            cookies=cookies,
         )
         DBEngine.db.commit()
         return user_id
 
     @staticmethod
     def edit_user(
-        user_id: int, 
-        atype: int, 
-        username: str, 
-        password: str,
-        dname: str) -> None:
+        user_id: int, atype: int, username: str, password: str, dname: str
+    ) -> None:
 
         user = DBEngine.db(DBEngine.db.users.id == user_id).select().first()
 
         if user:
             user.dname = dname
 
-            if (user.atype != atype or
-                user.username != username or
-                user.password != password):
+            if (
+                user.atype != atype
+                or user.username != username
+                or user.password != password
+            ):
 
                 user.atype = atype
                 user.username = username
@@ -58,12 +58,11 @@ class User:
             DBEngine.db.commit()
 
     @staticmethod
-    def edit_data_and_cookies( 
-        user_id: int,
-        data: dict[str, str] = None,
-        cookies: dict[str, str] = None):
+    def edit_data_and_cookies(
+        user_id: int, data: dict[str, str] = None, cookies: dict[str, str] = None
+    ):
 
-        if (user := DBEngine.db(DBEngine.db.users.id == user_id).select().first()):
+        if user := DBEngine.db(DBEngine.db.users.id == user_id).select().first():
             user.data = data
             user.cookies = cookies
 

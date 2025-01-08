@@ -7,17 +7,13 @@ from ..constant import ACCOUNT_TYPES, Refs
 
 
 class TabSwitch(ft.Container):
-    def __init__(
-        self,
-        page: ft.Page,
-        initial_value = 0,
-        **kwargs):
+    def __init__(self, page: ft.Page, initial_value=0, **kwargs):
         super().__init__(**kwargs)
 
         self.page = page
 
         self.padding = ft.padding.only(left=10, right=10)
-        
+
         # if Refs.users.current.controls:
         #     index = self.page.client_storage.get("cur_user") or 0
         #     control = Refs.users.current.controls[index]
@@ -33,9 +29,9 @@ class TabSwitch(ft.Container):
         # Initialize the row with the tabs inside the main container
         self.content = ft.Row(
             controls=self.tabs,
-            alignment=ft.MainAxisAlignment.CENTER, 
+            alignment=ft.MainAxisAlignment.CENTER,
             scroll=ft.ScrollMode.HIDDEN,
-            expand=True
+            expand=True,
         )
 
     def get_container(self, index: int, text: str, active: bool):
@@ -47,11 +43,7 @@ class TabSwitch(ft.Container):
                         value=text,
                         size=15,
                     ),
-                    ft.Image(
-                        src=f"atype/{index}.png",
-                        width=32,
-                        height=32
-                    )
+                    ft.Image(src=f"atype/{index}.png", width=32, height=32),
                 ]
             ),
             padding=5,
@@ -59,15 +51,14 @@ class TabSwitch(ft.Container):
             bgcolor=self.get_bgcolor(active),
             alignment=ft.alignment.center,
             animate=ft.animation.Animation(
-                duration=300, 
-                curve=ft.AnimationCurve.DECELERATE
+                duration=300, curve=ft.AnimationCurve.DECELERATE
             ),
             on_click=self.toggle_switch,
-            data=active
+            data=active,
         )
 
     def get_bgcolor(self, active: bool) -> str:
-        return (self.page.theme.color_scheme_seed if active else None)
+        return self.page.theme.color_scheme_seed if active else None
 
     def toggle_switch(self, e):
         """Switch to the tab that was clicked and update its appearance."""

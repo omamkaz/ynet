@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
-from .user import UserDialog
 from .about import AboutDialog
-from .theme import ThemeDialog
+from .captcha_verify import CaptchaVerifyDialog
 from .edit_user import EditUserDialog
 from .new_user import NewUserDialog
-from .captcha_verify import CaptchaVerifyDialog
+from .theme import ThemeDialog
+from .user import UserDialog

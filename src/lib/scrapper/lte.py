@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import requests
+
 from .base import Base, ParserError
 
 
@@ -43,17 +44,23 @@ class LTE(Base):
             data = {}
             for tr in table[5:7]:
                 key = tr.find("th").text.replace("الرصيد", "").strip()
-                data[label1 + f" ({key})"] = self.translator(tr.find("span").text.strip())
+                data[label1 + f" ({key})"] = self.translator(
+                    tr.find("span").text.strip()
+                )
 
             data["valid_credit"] = table[-2].find("td").text.strip()
-            data[table[-1].find("th").text.strip()] = self.translator(table[-1].find("span").text.strip())
+            data[table[-1].find("th").text.strip()] = self.translator(
+                table[-1].find("span").text.strip()
+            )
 
             table.pop(0)
             table.pop(1)
 
             data.update(
                 {
-                    tr.find("th").text.strip(): self.translator(tr.find("span").text.strip())
+                    tr.find("th").text.strip(): self.translator(
+                        tr.find("span").text.strip()
+                    )
                     for tr in table[:2]
                 }
             )

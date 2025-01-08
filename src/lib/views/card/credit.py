@@ -19,28 +19,22 @@ class CardCredit(ft.Container):
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
                 ft.Text(
-                    value="الرصيد المتاح",
-                    color=ft.Colors.WHITE,
-                    size=14,
-                    rtl=True
+                    value="الرصيد المتاح", color=ft.Colors.WHITE, size=14, rtl=True
                 ),
                 ft.Text(
-                    size = 18,
-                    color = ft.Colors.WHITE,
+                    size=18,
+                    color=ft.Colors.WHITE,
                     font_family="Monospace",
                     weight=ft.FontWeight.W_700,
                     text_align="center",
                     spans=[
                         ft.TextSpan(
-                            style = ft.TextStyle(
-                                color = ft.Colors.GREEN,
-                                size = 12
-                            ),
-                            visible=False
+                            style=ft.TextStyle(color=ft.Colors.GREEN, size=12),
+                            visible=False,
                         )
-                    ]
-                )
-            ]
+                    ],
+                ),
+            ],
         )
 
     def hide_credit_state(self):

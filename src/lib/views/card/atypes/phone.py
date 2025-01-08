@@ -12,8 +12,10 @@ class PhoneCard(Card):
     def __init__(self, page: ft.Page, **kwargs):
         super().__init__(page, 2, **kwargs)
 
-        self.card_credit.visible = False
         self._isp = Phone()
+
+        self.card_credit.visible = False
+        self.card_title.margin = ft.margin.only(bottom=15)
 
     def set_card_data(self, old_data: dict[str, str] = None) -> None:
         self.card_title.set_logo(self._user.atype)
@@ -26,10 +28,7 @@ class PhoneCard(Card):
     def start_captcha_verify(self) -> None:
         self._isp.login(self._user.username)
         cv = CaptchaVerifyDialog(
-            self.page,
-            self._isp,
-            lambda data: self.on_captcha_verify_submit(data),
-            5
+            self.page, self._isp, lambda data: self.on_captcha_verify_submit(data), 5
         )
         cv.open_dialog()
 

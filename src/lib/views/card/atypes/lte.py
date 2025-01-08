@@ -31,10 +31,10 @@ class LTECard(Card):
         old_data = self._user.data.copy() if self._user.data else None
         self._isp.login(self._user.username)
         cv = CaptchaVerifyDialog(
-            self.page, 
-            self._isp, 
-            lambda data: self.on_captcha_verify_submit(data, old_data), 
-            5
+            self.page,
+            self._isp,
+            lambda data: self.on_captcha_verify_submit(data, old_data),
+            5,
         )
         cv.open_dialog()
 
@@ -42,5 +42,7 @@ class LTECard(Card):
         self._isp = LTE()
         self.start_captcha_verify()
 
-    def on_captcha_verify_submit(self, data: dict[str, str], old_data: dict[str, str] = None) -> None:
+    def on_captcha_verify_submit(
+        self, data: dict[str, str], old_data: dict[str, str] = None
+    ) -> None:
         super().on_captcha_verify_submit(1, data, old_data, None)

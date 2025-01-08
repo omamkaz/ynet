@@ -28,11 +28,11 @@ class NewUserDialog(UserDialog):
 
         User.add_user(
             atype,
-            self.username.value, 
+            self.username.value,
             self.password.value or (None if atype != 0 else "123456"),
             self.dname.value,
             None,
-            None
+            None,
         )
 
         self.on_submit_done()

@@ -10,41 +10,30 @@ from ..dialogs.credit_card import CreditCardDialog
 
 
 class UserListTile(ft.ListTile):
-    def __init__(self,
-                 page: ft.Page,
-                 index: int,
-                 atype: int,
-                 title: str,
-                 subtitle: str,
-                 verified: bool = False,
-                 **kwargs):
+    def __init__(self, page: ft.Page, index: int, user, **kwargs):
         super().__init__(**kwargs)
 
         self.page = page
 
         self._index = index
-        self._atype = atype
+        self._user = user
 
         self.on_click = self._on_click
 
-        self.title = ft.Text(value = title, rtl=True)
-        self.subtitle = ft.Text(value = subtitle, rtl=True)
+        self.title = ft.Text(value=user.dname or f"حساب رقم {index}", rtl=True)
+        self.subtitle = ft.Text(value=user.username, rtl=True)
 
         self.trailing = ft.Stack(
             alignment=ft.alignment.bottom_right,
             controls=[
+                ft.Image(src=f"atype/{user.atype}.png", width=38, height=38),
                 ft.Image(
-                    src=f"/atype/{atype}.png",
-                    width=38,
-                    height=38
-                ),
-                ft.Image(
-                    src="/verified.svg",
+                    src="verified.svg",
                     width=14,
                     height=14,
-                    visible=verified
-                )
-            ]
+                    visible=user.data is not None,
+                ),
+            ],
         )
 
         self.leading = ft.PopupMenuButton(
@@ -54,22 +43,20 @@ class UserListTile(ft.ListTile):
                     text="تجديد",
                     icon=ft.Icons.CREDIT_CARD,
                     on_click=self.on_credit,
-                    disabled=self._atype != 0
+                    disabled=user.atype != 0,
                 ),
                 ft.PopupMenuItem(
-                    text="تعديل",
-                    icon=ft.Icons.EDIT,
-                    on_click=self.on_edit
+                    text="تعديل", icon=ft.Icons.EDIT, on_click=self.on_edit
                 ),
                 ft.PopupMenuItem(
-                    text="حذف",
-                    icon=ft.Icons.DELETE,
-                    on_click=self.on_delete
-                )
-            ]
+                    text="حذف", icon=ft.Icons.DELETE, on_click=self.on_delete
+                ),
+            ],
         )
 
-        self.selected_tile_color = ft.Colors.with_opacity(0.09, self.page.theme.color_scheme_seed)
+        self.selected_tile_color = ft.Colors.with_opacity(
+            0.09, self.page.theme.color_scheme_seed
+        )
 
     def _on_click(self, e: ft.ControlEvent = None) -> None:
         Refs.users.current.select_item(self)
@@ -79,7 +66,7 @@ class UserListTile(ft.ListTile):
             self.page.close(alert)
             self.page.client_storage.set("cur_user", 0)
 
-            User.delete_user(self.data)
+            User.delete_user(self._user.id)
             Refs.users.current.update_list()
 
             if Refs.users.current.controls:
@@ -90,20 +77,23 @@ class UserListTile(ft.ListTile):
         alert = ft.AlertDialog(
             modal=True,
             title=ft.Text(
-                value = f"هل أنت متأكد من انك تريد حذف {self.title.value}",
-                rtl=True
+                value="هل أنت متأكد من انك تريد حذف ",
+                spans=[
+                    ft.TextSpan(
+                        text=self.title.value,
+                        style=ft.TextStyle(
+                            color=ft.Colors.RED, weight=ft.FontWeight.BOLD
+                        ),
+                    )
+                ],
+                rtl=True,
             ),
             actions=[
+                ft.ElevatedButton(text="نعم", on_click=lambda e: on_ok()),
                 ft.ElevatedButton(
-                    text="نعم",
-                    on_click=lambda e: on_ok()
+                    text="لا", autofocus=True, on_click=lambda e: self.page.close(alert)
                 ),
-                ft.ElevatedButton(
-                    text="لا",
-                    autofocus=True,
-                    on_click=lambda e: self.page.close(alert)
-                )
-            ]
+            ],
         )
         self.page.open(alert)
 
@@ -112,9 +102,9 @@ class UserListTile(ft.ListTile):
         self.trailing.update()
 
     def on_edit(self, e: ft.ControlEvent = None):
-        user_view_edit = EditUserDialog(self.page, self.data)
+        user_view_edit = EditUserDialog(self.page, self._user.id)
         self.page.open(user_view_edit)
 
     def on_credit(self, e: ft.ControlEvent = None) -> None:
-        credit_card_dialog = CreditCardDialog(self.page, self._index)
+        credit_card_dialog = CreditCardDialog(self.page, self._user.id)
         credit_card_dialog.open_dialog()

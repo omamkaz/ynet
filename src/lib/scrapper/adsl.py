@@ -1,25 +1,30 @@
 #!/usr/bin/python3
 
 import re
+from typing import Any, Callable
+
 import requests
 from bs4 import BeautifulSoup
-from typing import Any, Callable
 
 
 class Erros:
     @classmethod
     def err(cls, resp: requests.Response) -> str | None:
-        '''if the return is None that means doesn't have any error!'''
+        """if the return is None that means doesn't have any error!"""
 
         soup = ADSL.bs4(resp)
 
         if "Invalid username or password!" in soup.text.strip():
             return "خطأ في اسم المستخدم أو كلمة مرور!"
 
-        elif (err := soup.find("span", id="ctl00_ContentPlaceHolder1_labErr")) is not None and err.text.strip():
+        elif (
+            err := soup.find("span", id="ctl00_ContentPlaceHolder1_labErr")
+        ) is not None and err.text.strip():
             return "الرمز غير مطابق للصورة، يرجى المحاولة مرة أخرى"
 
-        elif (err := soup.find("span", id="ctl00_ContentPlaceHolder1_LabMsg")) is not None and err.text.strip():
+        elif (
+            err := soup.find("span", id="ctl00_ContentPlaceHolder1_LabMsg")
+        ) is not None and err.text.strip():
             return err.text
 
 
@@ -30,16 +35,15 @@ class Payload:
     login_btn: str = "ctl00$ContentPlaceHolder1$loginframe$LoginButton"
     captcha_btn: str = "ctl00$ContentPlaceHolder1$submitCaptch"
     credit_submit: str = "ctl00$ContentPlaceHolder1$ppSubmit"
-    credit_card: str = "ctl00$ContentPlaceHolder1$ppCard" # {1..15}
+    credit_card: str = "ctl00$ContentPlaceHolder1$ppCard"  # {1..15}
 
     login_btn_default: str = "Sign+In"
     captcha_btn_default: str = "Submit"
     credit_submit_default: str = "++++إدراج++++"
 
-    def __init__(self, 
-                 username: str = None, 
-                 password: str = None,
-                 login_btn: str = None):
+    def __init__(
+        self, username: str = None, password: str = None, login_btn: str = None
+    ):
 
         self._data = {}
         self._data[Payload.username] = username
@@ -51,7 +55,7 @@ class Payload:
 
     def set_password(self, password: str) -> None:
         self._data[Payload.password] = password
-    
+
     def set_login_btn(self, login_btn: str = None) -> None:
         self._data[Payload.login_btn] = login_btn or self.login_btn_default
 
@@ -72,10 +76,7 @@ class Payload:
 
     def set_credit_cards(self, cards: list[int | str]) -> None:
         self._data.update(
-            {
-                Payload.credit_card + str(i): str(card)
-                for i, card in enumerate(cards, 1)
-            }
+            {Payload.credit_card + str(i): str(card) for i, card in enumerate(cards, 1)}
         )
 
     def set(self, key: str, value: Any) -> None:
@@ -89,10 +90,7 @@ class Payload:
 class ADSL:
     URL = "https://adsl.yemen.net.ye"
 
-    def __init__(
-            self, 
-            lang: str = "ar", # en|ar
-            cookies: dict = None):
+    def __init__(self, lang: str = "ar", cookies: dict = None):  # en|ar
 
         self._lang: str = lang
         self._timeout: int = 10
@@ -112,14 +110,14 @@ class ADSL:
     def fetch_payload_data(self, req: Callable) -> None:
         resp = req()
         resp_soup = self.bs4(resp)
-        for _input in resp_soup.find("form", attrs={"name": "aspnetForm"}).find_all("input"):
+        for _input in resp_soup.find("form", attrs={"name": "aspnetForm"}).find_all(
+            "input"
+        ):
             if (name := _input.attrs.get("name")).startswith("_"):
                 self._payload.set(name, _input.attrs.get("value"))
         return resp
 
-    def login(self, 
-              username: str = None, 
-              password: str = None) -> int:
+    def login(self, username: str = None, password: str = None) -> int:
 
         self.clear_cookies()
 
@@ -130,13 +128,19 @@ class ADSL:
             self._payload.set_password(password)
 
         # Login GET method
-        self.fetch_payload_data(lambda: self._session.get(self._login_url, timeout=self._timeout))
+        self.fetch_payload_data(
+            lambda: self._session.get(self._login_url, timeout=self._timeout)
+        )
 
         # Login POST method
-        _post = self.fetch_payload_data(lambda: self._session.post(self._login_url, 
-                                                                   self._payload.data,
-                                                                   allow_redirects=True, 
-                                                                   timeout=self._timeout))
+        _post = self.fetch_payload_data(
+            lambda: self._session.post(
+                self._login_url,
+                self._payload.data,
+                allow_redirects=True,
+                timeout=self._timeout,
+            )
+        )
         return _post.status_code
 
     def replace_exception(self, func: Callable) -> Any | None:
@@ -147,7 +151,9 @@ class ADSL:
 
     def verify(self, captcha: str) -> tuple[requests.Response, str | None]:
         self._payload.set_captcha(captcha)
-        resp = self._session.post(self._login_url, data=self._payload.data, timeout=self._timeout)
+        resp = self._session.post(
+            self._login_url, data=self._payload.data, timeout=self._timeout
+        )
         return (self.replace_exception(lambda: self.parse_data(resp)), Erros.err(resp))
 
     def parse_data(self, resp: requests.Response) -> dict[str, str]:
@@ -155,23 +161,20 @@ class ADSL:
 
         name = resp_soup.find("span", id="ctl00_labWelcome").text.strip()
         labels = resp_soup.find_all("td", class_="td_mc")
-        values = resp_soup.find_all("span", attrs={"id": re.compile(r"ctl00_ContentPlaceHolder1_\d+")})
+        values = resp_soup.find_all(
+            "span", attrs={"id": re.compile(r"ctl00_ContentPlaceHolder1_\d+")}
+        )
 
         data = {
             "name": name.split(":")[-1].strip(),
             "account_status": values.pop(2).text.strip() == "حساب نشط",
-            "valid_credit": values.pop(-2).text.strip()
+            "valid_credit": values.pop(-2).text.strip(),
         }
 
         labels.pop(2)
         labels.pop(-2)
 
-        data.update(
-            {
-                k.text.strip(): v.text.strip()
-                for k, v in zip(labels, values)
-            }
-        )
+        data.update({k.text.strip(): v.text.strip() for k, v in zip(labels, values)})
         return data
 
     def fetch_data(self, cookies: dict = None) -> dict:
@@ -184,15 +187,21 @@ class ADSL:
         return self._session.get(self._captcha_url).content
 
     def fetch_credit(self, cards: list[int | str]) -> None:
-        self.fetch_payload_data(lambda: self._session.get(self._credit_url, timeout=self._timeout))
+        self.fetch_payload_data(
+            lambda: self._session.get(self._credit_url, timeout=self._timeout)
+        )
 
         self._payload.set_credit_cards(cards)
         self._payload.set_credit_submit()
 
-        _post = self.fetch_payload_data(lambda: self._session.post(self._credit_url,
-                                                                   self._payload.data,
-                                                                   allow_redirects=True,
-                                                                   timeout=self._timeout))
+        _post = self.fetch_payload_data(
+            lambda: self._session.post(
+                self._credit_url,
+                self._payload.data,
+                allow_redirects=True,
+                timeout=self._timeout,
+            )
+        )
 
         return "", Erros.err(_post)
 

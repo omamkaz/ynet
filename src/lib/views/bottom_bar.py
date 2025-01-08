@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from .dialogs import AboutDialog
-from .dialogs import ThemeDialog
+
 from ..constant import THEME_COLORS
+from .dialogs import AboutDialog, ThemeDialog
 
 
 class BottomAppBar(ft.BottomAppBar):
@@ -20,16 +20,10 @@ class BottomAppBar(ft.BottomAppBar):
 
         self.content = ft.Row(
             controls=[
-                ft.IconButton(
-                    icon=ft.Icons.INFO,
-                    on_click=self.open_about_dialog
-                ),
-                ft.IconButton(
-                    icon=ft.Icons.COLORIZE,
-                    on_click=self.open_theme_dialog
-                )
+                ft.IconButton(icon=ft.Icons.INFO, on_click=self.open_about_dialog),
+                ft.IconButton(icon=ft.Icons.COLORIZE, on_click=self.open_theme_dialog),
             ],
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
         )
 
     def open_about_dialog(self, e: ft.ControlEvent = None) -> None:

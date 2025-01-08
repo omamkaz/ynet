@@ -7,13 +7,15 @@ from ...constant import ACCOUNT_TYPES, Platform, Refs
 
 
 class TextField(ft.TextField):
-    def __init__(self,
-                 page: ft.Page,
-                 label: str, 
-                 regex: str = "^[a-zA-Z0-9]*$",
-                 required: bool = False,
-                 suffix_visible: bool = False,
-                 **kwargs):
+    def __init__(
+        self,
+        page: ft.Page,
+        label: str,
+        regex: str = "^[a-zA-Z0-9]*$",
+        required: bool = False,
+        suffix_visible: bool = False,
+        **kwargs,
+    ):
         super().__init__(label=label, **kwargs)
 
         self._required: bool = required
@@ -27,7 +29,7 @@ class TextField(ft.TextField):
         self.suffix = ft.IconButton(
             icon=ft.Icons.NUMBERS,
             on_click=self.change_input_type,
-            visible=suffix_visible and not Platform.is_desktop(page)
+            visible=suffix_visible and not Platform.is_desktop(page),
         )
 
         self.on_change = self.on_text_changed
@@ -41,7 +43,9 @@ class TextField(ft.TextField):
         self.update()
 
     def change_input_type(self, e: ft.ControlEvent = None):
-        self.keyboard_type = None if self.keyboard_type is not None else ft.KeyboardType.NUMBER
+        self.keyboard_type = (
+            None if self.keyboard_type is not None else ft.KeyboardType.NUMBER
+        )
         self.suffix.selected = self.keyboard_type is not None
         self.update()
 
@@ -52,18 +56,11 @@ class TextField(ft.TextField):
 class DropdownOption(ft.dropdown.Option):
     def __init__(self, index: int, atype: str, **kwargs):
         super().__init__(index, **kwargs)
-    
+
         self.content = ft.Row(
             controls=[
-                ft.Image(
-                    src=f"atype/{index}.png",
-                    width=32,
-                    height=32
-                ),
-                ft.Text(
-                    value=atype,
-                    rtl=True
-                )
+                ft.Image(src=f"atype/{index}.png", width=32, height=32),
+                ft.Text(value=atype, rtl=True),
             ]
         )
 
@@ -83,28 +80,24 @@ class UserDialog(ft.BottomSheet):
         self.title = ft.Ref[ft.Text]()
         self.drop_down = ft.Ref[ft.Dropdown]()
 
-        self.dname = TextField(
-            page=self.page, 
-            label="الاسم المستعار", 
-            regex=""
-        )
+        self.dname = TextField(page=self.page, label="الاسم المستعار", regex="")
 
         self.username = TextField(
             page=self.page,
             label="أسم المستخدم",
             required=True,
             on_submit=self.on_submit,
-            suffix_visible=True
+            suffix_visible=True,
         )
 
         self.password = TextField(
             page=self.page,
-            value = "123456",
+            value="123456",
             label="كلمة السر",
             password=True,
             can_reveal_password=True,
             on_submit=self.on_submit,
-            suffix_visible=True
+            suffix_visible=True,
         )
 
         self.content = ft.SafeArea(
@@ -112,12 +105,7 @@ class UserDialog(ft.BottomSheet):
             content=ft.Column(
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 controls=[
-                    ft.Image(
-                        ref=self.logo,
-                        width=64,
-                        height=64,
-                        src="atype/0.png"
-                    ),
+                    ft.Image(ref=self.logo, width=64, height=64, src="atype/0.png"),
                     ft.Row(
                         alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
@@ -126,10 +114,10 @@ class UserDialog(ft.BottomSheet):
                                 value=ACCOUNT_TYPES[0],
                                 weight=ft.FontWeight.W_500,
                                 size=16,
-                                rtl=True
+                                rtl=True,
                             ),
-                            ft.Icon(name=view_type_icon)
-                        ]
+                            ft.Icon(name=view_type_icon),
+                        ],
                     ),
                     ft.Divider(10, color=ft.Colors.TRANSPARENT),
                     ft.Dropdown(
@@ -137,11 +125,13 @@ class UserDialog(ft.BottomSheet):
                         label="نوع الحساب",
                         value=0,
                         autofocus=True,
-                        on_change=lambda e: self.change_account_type(int(self.drop_down.current.value)),
+                        on_change=lambda e: self.change_account_type(
+                            int(self.drop_down.current.value)
+                        ),
                         options=[
                             DropdownOption(index, atype)
                             for index, atype in enumerate(ACCOUNT_TYPES)
-                        ]
+                        ],
                     ),
                     ft.Divider(10, color=ft.Colors.TRANSPARENT),
                     self.dname,
@@ -151,18 +141,15 @@ class UserDialog(ft.BottomSheet):
                         alignment=ft.MainAxisAlignment.END,
                         controls=[
                             ft.ElevatedButton(
-                                text = "الغاء", 
-                                color = ft.Colors.RED,
-                                on_click=lambda e: self.close()
+                                text="الغاء",
+                                color=ft.Colors.RED,
+                                on_click=lambda e: self.close(),
                             ),
-                            ft.ElevatedButton(
-                                text = "حفظ",
-                                on_click=self.on_submit
-                            )
-                        ]
-                    )
-                ]
-            )
+                            ft.ElevatedButton(text="حفظ", on_click=self.on_submit),
+                        ],
+                    ),
+                ],
+            ),
         )
 
     def close(self):
@@ -177,7 +164,7 @@ class UserDialog(ft.BottomSheet):
     def _change_account_type(self, atype: int) -> None:
         self.drop_down.current.value = atype
 
-        self.password.visible = (atype == 0)
+        self.password.visible = atype == 0
 
         self.title.current.value = ACCOUNT_TYPES[atype]
         self.logo.current.src = f"atype/{atype}.png"
@@ -200,9 +187,12 @@ class UserDialog(ft.BottomSheet):
         self.update()
 
     def valid_user(self, atype: int = 0) -> bool | None:
-        return not (not self.username.value.strip() 
-                    or self.username.error_text
-                    or atype != 0 and (len(self.username.value) < self.username.max_length))
+        return not (
+            not self.username.value.strip()
+            or self.username.error_text
+            or atype != 0
+            and (len(self.username.value) < self.username.max_length)
+        )
 
     def on_submit(self, e: ft.ControlEvent):
         self.username.on_text_changed()

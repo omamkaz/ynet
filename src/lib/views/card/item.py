@@ -5,14 +5,10 @@ import flet as ft
 
 
 class CardItem(ft.Container):
-    def __init__(self, 
-                 label: str = "", 
-                 value: str = "",
-                 end: bool = False,
-                 **kwargs):
+    def __init__(self, label: str = "", value: str = "", end: bool = False, **kwargs):
         super().__init__(**kwargs)
 
-        self.margin=0
+        self.margin = 0
         self.padding = ft.padding.only(left=10, right=10)
         self.content = ft.Column(
             spacing=0,
@@ -30,26 +26,23 @@ class CardItem(ft.Container):
                             overflow=ft.TextOverflow.CLIP,
                             font_family="circle_rounded",
                             selectable=True,
-                            rtl=True
+                            rtl=True,
                         ),
                         ft.Text(
                             value=label,
                             color=ft.Colors.WHITE,
                             size=14,
                             font_family="linaround",
-                            text_align="right"
-                        )
-                    ]
+                            text_align="right",
+                        ),
+                    ],
                 )
-            ]
+            ],
         )
 
         if not end:
             self.content.controls.append(
-                ft.Divider(
-                    leading_indent=4,
-                    trailing_indent=4
-                )
+                ft.Divider(leading_indent=4, trailing_indent=4)
             )
         else:
             self.margin = ft.margin.only(bottom=5)

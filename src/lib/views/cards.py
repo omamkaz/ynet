@@ -19,20 +19,25 @@ class Cards(ft.Stack):
             PhoneCard(page, visible=False),
             ft.Container(
                 content=ft.Lottie(
-                    fit=ft.ImageFit.COVER,
-                    src_base64=LottieFiles.online_health_report
+                    fit=ft.ImageFit.COVER, src_base64=LottieFiles.online_health_report
                 ),
                 alignment=ft.alignment.center,
-                on_click=lambda e: self.open_new_user_dialog(self.page)
+                on_click=lambda e: self.open_new_user_dialog(self.page),
             ),
             ft.Container(
-                content=ft.Lottie(
-                    fit=ft.ImageFit.COVER,
-                    src_base64=LottieFiles.pin_required
+                content=ft.Column(
+                    controls=[
+                        ft.Lottie(
+                            fit=ft.ImageFit.COVER, src_base64=LottieFiles.pin_required
+                        ),
+                        ft.Text(value="قم بالضغط هنا لاكمال التسجيل"),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 ),
                 alignment=ft.alignment.center,
-                on_click=self.on_verify_click
-            )
+                on_click=self.on_verify_click,
+            ),
         ]
 
     def toggle_card(self, atype: int | str = 3) -> Card:
@@ -40,10 +45,11 @@ class Cards(ft.Stack):
 
         top_card = self.page.controls[0].content.controls[0].controls[0]
         top_card.content.visible = 0 <= atype <= 2
+        top_card.height = 250 if atype != 2 else 170
         top_card.update()
 
         for i, c in enumerate(self.controls):
-            c.visible = (i == atype)
+            c.visible = i == atype
 
         self.update()
         return self.controls[atype]
@@ -59,4 +65,4 @@ class Cards(ft.Stack):
     def on_verify_click(self, e: ft.ControlEvent) -> None:
         cur_user_index: int = self.page.client_storage.get("cur_user") or 0
         control: int = Refs.users.current.controls[cur_user_index]
-        self.get_card(control._atype).set_login(control.data)
+        self.get_card(control._user.atype).set_login(control._user.id)

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import requests
+
 from .base import Base, ParserError
 
 
@@ -35,8 +36,13 @@ class Phone(Base):
         try:
             resp_soup = self.bs4(resp)
             return {
-                tr.find("th").text.strip().replace(":", ""): tr.find("span").text.strip()
-                for tr in tuple(resp_soup.find("table", class_="transdetail").find_all("tr"))[1:]
+                tr.find("th")
+                .text.strip()
+                .replace(":", ""): tr.find("span")
+                .text.strip()
+                for tr in tuple(
+                    resp_soup.find("table", class_="transdetail").find_all("tr")
+                )[1:]
             }
         except AttributeError:
             raise ParserError(ParserError.limit_or_service_err())

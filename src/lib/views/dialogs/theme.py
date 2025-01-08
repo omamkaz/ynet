@@ -9,11 +9,9 @@ from ...constant import THEME_COLORS, ThemeController
 
 
 class ThemeColorButtonGroup(ft.Row):
-    def __init__(self,
-                 value: str,
-                 colors: Sequence[str],
-                 on_change: Callable,
-                 **kwargs):
+    def __init__(
+        self, value: str, colors: Sequence[str], on_change: Callable, **kwargs
+    ):
         super().__init__(**kwargs)
 
         self.scroll = ft.ScrollMode.HIDDEN
@@ -29,7 +27,7 @@ class ThemeColorButtonGroup(ft.Row):
                 on_click=self._on_click,
                 shape=ft.BoxShape.CIRCLE,
                 border=None if color != value else self.get_border(value),
-                content=None if color!= value else self.get_icon(value)
+                content=None if color != value else self.get_icon(value),
             )
             for color in colors
         ]
@@ -38,7 +36,7 @@ class ThemeColorButtonGroup(ft.Row):
         return ft.border.all(3, color + "100")
 
     def get_icon(self, color: str) -> ft.Icon:
-        return ft.Icon(ft.Icons.CHECK, color=color+"900")
+        return ft.Icon(ft.Icons.CHECK, color=color + "900")
 
     def select_color(self, color: str) -> None:
         for c in self.controls:
@@ -56,10 +54,7 @@ class ThemeColorButtonGroup(ft.Row):
 
 
 class ThemeModeButtonGroup(ft.Row):
-    def __init__(self,
-                 value: str,
-                 on_change: Callable,
-                 **kwargs):
+    def __init__(self, value: str, on_change: Callable, **kwargs):
         super().__init__(**kwargs)
 
         self.on_change = on_change
@@ -80,24 +75,22 @@ class ThemeModeButtonGroup(ft.Row):
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.Icon(
-                            name=icon,
-                            size=64
-                        ),
+                        ft.Icon(name=icon, size=64),
                         ft.Text(
                             value=tooltip,
                             text_align="center",
                             size=12,
                             rtl=True,
-                            weight=ft.FontWeight.BOLD
-                        )
-                    ]
-                )
+                            weight=ft.FontWeight.BOLD,
+                        ),
+                    ],
+                ),
             )
             for icon, name, tooltip in zip(
-                [ft.Icons.BRIGHTNESS_MEDIUM, ft.Icons.DARK_MODE, ft.Icons.LIGHT_MODE], 
-                ["system", "dark", "light"], 
-                ["الوضع الافتراضي", "الوضع الليلي", "الوضع النهاري"])
+                [ft.Icons.BRIGHTNESS_MEDIUM, ft.Icons.DARK_MODE, ft.Icons.LIGHT_MODE],
+                ["system", "dark", "light"],
+                ["الوضع الافتراضي", "الوضع الليلي", "الوضع النهاري"],
+            )
         ]
 
     def get_color(self, char: str) -> str:
@@ -108,7 +101,9 @@ class ThemeModeButtonGroup(ft.Row):
 
     def get_bgcolor(self, mode: str) -> str:
         if self.page is not None:
-            mode: str = self.page.platform_brightness.name.lower() if mode == "system" else mode
+            mode: str = (
+                self.page.platform_brightness.name.lower() if mode == "system" else mode
+            )
         return self.get_color("f") if mode == "light" else self.get_color("1")
 
     def select_mode(self, mode: str) -> None:
@@ -139,16 +134,20 @@ class ThemeDialog(ft.BottomSheet):
                 controls=[
                     ThemeModeButtonGroup(
                         value=ThemeController.get_theme_mode(self.page),
-                        on_change=lambda mode: ThemeController.toggle_theme_mode(mode, self.page)
+                        on_change=lambda mode: ThemeController.toggle_theme_mode(
+                            mode, self.page
+                        ),
                     ),
                     ft.Container(
                         margin=ft.margin.only(left=25, right=25),
                         content=ThemeColorButtonGroup(
                             value=ThemeController.get_theme_color(self.page),
                             colors=THEME_COLORS,
-                            on_change=lambda color: ThemeController.set_theme_color(color, self.page)
-                        )
-                    )
-                ]
-            )
+                            on_change=lambda color: ThemeController.set_theme_color(
+                                color, self.page
+                            ),
+                        ),
+                    ),
+                ],
+            ),
         )

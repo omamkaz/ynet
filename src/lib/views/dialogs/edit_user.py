@@ -23,7 +23,7 @@ class EditUserDialog(UserDialog):
         if user.atype == 0:
             self.password.value = user.password
 
-        self.password.visible = (user.atype == 0)
+        self.password.visible = user.atype == 0
         self.title.current.value = ACCOUNT_TYPES[user.atype]
         self.logo.current.src = f"/atype/{user.atype}.png"
         self.drop_down.current.value = user.atype
@@ -37,18 +37,20 @@ class EditUserDialog(UserDialog):
 
         # check for exists user
         for user in User.get_users():
-            if (user.id != self.user_id
-                and user.atype == atype 
-                and user.username == self.username.value):
+            if (
+                user.id != self.user_id
+                and user.atype == atype
+                and user.username == self.username.value
+            ):
                 Dialogs.error("هاذا المستخدم موجود مسبقا!", self.page)
                 return
 
         User.edit_user(
             self.user_id,
             atype,
-            self.username.value, 
+            self.username.value,
             self.password.value,
-            self.dname.value
+            self.dname.value,
         )
 
         self.on_submit_done()

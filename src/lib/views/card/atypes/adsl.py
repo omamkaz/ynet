@@ -21,7 +21,6 @@ class ADSLCard(Card):
 
         self.card_title.set_logo(self._user.atype)
         self.card_title.set_subtitle(self._user.username)
-
         self.card_title.set_title(pdata.pop("name"))
         self.card_title.set_active(pdata.pop("account_status"))
         self.card_credit.set_credit(pdata.pop("valid_credit"))
@@ -42,10 +41,10 @@ class ADSLCard(Card):
 
         self._isp.login(self._user.username, self._user.password)
         cv = CaptchaVerifyDialog(
-            self.page, 
-            self._isp, 
+            self.page,
+            self._isp,
             lambda data: self.on_captcha_verify_submit(data, old_data),
-            4
+            4,
         )
         cv.open_dialog()
 
@@ -53,5 +52,7 @@ class ADSLCard(Card):
         self._isp = ADSL()
         self.fetch_web_data()
 
-    def on_captcha_verify_submit(self, data: dict[str, str], old_data: dict[str, str]) -> None:
+    def on_captcha_verify_submit(
+        self, data: dict[str, str], old_data: dict[str, str]
+    ) -> None:
         super().on_captcha_verify_submit(0, data, old_data, self._isp.get_cookies())

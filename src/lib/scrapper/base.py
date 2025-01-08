@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import random
-import requests
 from typing import Any
+
+import requests
 from bs4 import BeautifulSoup
 
 
@@ -18,7 +19,9 @@ class ParserError(Exception):
 
 class Erros:
     @classmethod
-    def err(cls, resp: requests.Response, err_id: str) -> str | None: # if the return is None that means doesn't have any error!
+    def err(
+        cls, resp: requests.Response, err_id: str
+    ) -> str | None:  # if the return is None that means doesn't have any error!
         soup = Base.bs4(resp)
 
         # phone number error
@@ -30,7 +33,9 @@ class Erros:
             return span.text.strip()
 
         # No Data error
-        if (p := soup.find("p", id="pmsgerr")) is not None and (err := p.find("font").text.strip()):
+        if (p := soup.find("p", id="pmsgerr")) is not None and (
+            err := p.find("font").text.strip()
+        ):
             return err
 
 

@@ -25,14 +25,7 @@ class UserListView(ft.Column):
 
     def new_item(self, index: int, user, tab_switch: int = 0) -> UserListTile:
         return UserListTile(
-            page=self.page,
-            index=index,
-            atype=user.atype,
-            title=user.dname or f"حساب رقم {index}",
-            subtitle=user.username,
-            verified=user.data is not None,
-            data=user.id,
-            visible = tab_switch == user.atype
+            page=self.page, index=index, user=user, visible=tab_switch == user.atype
         )
 
     def update_list(self):
@@ -60,7 +53,7 @@ class UserListView(ft.Column):
                 control = self.controls[control]
 
             for c in self.controls:
-                c.selected = (c == control)
+                c.selected = c == control
 
             self.update()
 
@@ -72,4 +65,4 @@ class UserListView(ft.Column):
             self.page.client_storage.set("cur_user", control._index - 1)
 
             Refs.users.current.set_selected_item(control)
-            Refs.cards.current.get_card(control._atype).set_data(control.data)
+            Refs.cards.current.get_card(control._user.atype).set_data(control._user.id)

@@ -85,10 +85,18 @@ class Application:
                                     height=250,
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
                                     bgcolor=page.theme.color_scheme_seed,
-                                    content=ft.Text(
-                                        value = "⭭ اسحب للأسفل للتحديث", 
-                                        size=11,
-                                        weight=ft.FontWeight.BOLD
+                                    content=ft.Row(
+                                        controls=[
+                                            ft.Icon(
+                                                name=ft.Icons.ARROW_DOWNWARD, size=14
+                                            ),
+                                            ft.Text(
+                                                value="اسحب للأسفل للتحديث",
+                                                size=11,
+                                                weight=ft.FontWeight.BOLD,
+                                            ),
+                                        ],
+                                        alignment=ft.MainAxisAlignment.CENTER,
                                     ),
                                     alignment=ft.alignment.top_center,
                                 ),
@@ -101,13 +109,13 @@ class Application:
                                 UserListView(page, ref=Refs.users),
                                 ft.Container(
                                     content=ft.Image(
-                                        src="empty.png",
-                                        width=128 * 2,
-                                        height=128 * 2
+                                        src="empty.png", width=128 * 2, height=128 * 2
                                     ),
                                     alignment=ft.alignment.center,
-                                    visible=not any(c.visible for c in Refs.users.current.controls)
-                                )
+                                    visible=not any(
+                                        c.visible for c in Refs.users.current.controls
+                                    ),
+                                ),
                             ],
                             ref=Refs.body,
                             expand=True,
