@@ -137,7 +137,7 @@ class Card(ft.GestureDetector):
 
     def set_loading(self, on: bool) -> None:
         self.page.views[0].disabled = on
-        self.card_title.content.controls[0].update()
+        # self.card_title.content.controls[0].update()
         self.card_title.toggle_loading_mode(on)
         self.page.update()
 

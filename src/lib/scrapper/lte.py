@@ -66,4 +66,4 @@ class LTE(Base):
             )
             return data
         except AttributeError:
-            raise Erros.limit_or_service_err()
+            raise Exception(Erros.limit_or_service_err())

@@ -45,4 +45,4 @@ class Phone(Base):
                 )[1:]
             }
         except AttributeError:
-            raise Erros.limit_or_service_err()
+            raise Exception(Erros.limit_or_service_err())
