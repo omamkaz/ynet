@@ -4,7 +4,8 @@ import re
 from typing import Any, Callable
 
 import requests
-from bs4 import BeautifulSoup
+
+from .base import Base
 
 
 class Erros:
@@ -12,7 +13,7 @@ class Erros:
     def err(cls, resp: requests.Response) -> str | None:
         """if the return is None that means doesn't have any error!"""
 
-        soup = ADSL.bs4(resp)
+        soup = Base.bs4(resp)
 
         if "Invalid username or password!" in soup.text.strip():
             return "خطأ في اسم المستخدم أو كلمة مرور!"
@@ -25,7 +26,7 @@ class Erros:
         elif (
             err := soup.find("span", id="ctl00_ContentPlaceHolder1_LabMsg")
         ) is not None and err.text.strip():
-            return err.text
+            return err.text.strip()
 
 
 class Payload:
@@ -93,14 +94,10 @@ class ADSL:
     def __init__(self, lang: str = "ar", cookies: dict = None):  # en|ar
 
         self._lang: str = lang
-        self._timeout: int = 10
+        self._timeout: int = 15
         self._payload: Payload = Payload()
 
         self.init_session(cookies)
-
-    @staticmethod
-    def bs4(req) -> BeautifulSoup:
-        return BeautifulSoup(req.content, "html.parser")
 
     def init_session(self, cookies: dict = None):
         self._session = requests.Session()
@@ -109,7 +106,7 @@ class ADSL:
 
     def fetch_payload_data(self, req: Callable) -> None:
         resp = req()
-        resp_soup = self.bs4(resp)
+        resp_soup = Base.bs4(resp)
         for _input in resp_soup.find("form", attrs={"name": "aspnetForm"}).find_all(
             "input"
         ):
@@ -157,7 +154,7 @@ class ADSL:
         return (self.replace_exception(lambda: self.parse_data(resp)), Erros.err(resp))
 
     def parse_data(self, resp: requests.Response) -> dict[str, str]:
-        resp_soup = self.bs4(resp)
+        resp_soup = Base.bs4(resp)
 
         name = resp_soup.find("span", id="ctl00_labWelcome").text.strip()
         labels = resp_soup.find_all("td", class_="td_mc")

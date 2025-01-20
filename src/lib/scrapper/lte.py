@@ -2,15 +2,15 @@
 
 import requests
 
-from .base import Base, ParserError
+from .base import Base, Erros
 
 
 class LTE(Base):
     def __init__(self):
         super().__init__()
 
-        self.set_login_url("9017")
-        self.set_captcha_url("quarybillcbs-api-plug")
+        self.login_url = "9017"
+        self.captcha_url = "quarybillcbs-api-plug"
 
         self._payload.username = "phoneidnew"
         self._payload.captcha = "captcha_code_qbillnew"
@@ -27,11 +27,11 @@ class LTE(Base):
         return key.replace("Unlimited Min", "غير محدود")
 
     def login(self, username: str) -> None:
-        resp = super().login(username)
-        soup = self.bs4(resp)
-
-        value = soup.find("input", id="querybillnew_field").attrs.get("value")
-        self._payload.set("querybillnew_field", value)
+        soup = self.bs4(super().login(username))
+        self._payload.set(
+            "querybillnew_field",
+            soup.find("input", id="querybillnew_field").attrs.get("value"),
+        )
 
     def fetch_data(self, resp: requests.Response) -> dict:
         super().fetch_data(resp)
@@ -66,4 +66,4 @@ class LTE(Base):
             )
             return data
         except AttributeError:
-            raise ParserError(ParserError.limit_or_service_err())
+            raise Erros.limit_or_service_err()

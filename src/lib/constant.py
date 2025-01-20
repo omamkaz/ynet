@@ -136,7 +136,6 @@ class ThemeController:
             controls[0].bgcolor = color
 
             for c in controls[1].controls[:3]:
-                # c.content.bgcolor = ThemeController.get_color(color, 800)
                 c.content.gradient.colors = ThemeController.get_gradient_colors(color)
 
             for t in page.controls[0].content.controls[1].content.controls:
@@ -181,7 +180,6 @@ class Dialogs:
     def connection_timeout(page: ft.Page) -> None:
         Dialogs._dialog(
             icon=ft.Icons.TIMER,
-            # err="لقد انقضا وقت انتضار الاتصال!",
             err="يبدو أن الاتصال بالأنترنت ضعيف, او ان المزود لايستجيب في الوقت الحالي.",
             lottie=LottieFiles.error,
             page=page,

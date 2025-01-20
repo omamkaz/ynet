@@ -7,7 +7,7 @@ from typing import Callable
 import flet as ft
 import requests
 
-from ...constant import Dialogs
+from ...constant import Dialogs, Refs
 from ...scrapper import ADSL, Base
 
 
@@ -86,6 +86,9 @@ class CaptchaVerifyDialog(ft.BottomSheet):
         self.update()
 
     def on_submit(self, e: ft.ControlEvent = None):
+        self.content.disabled = True
+        self.update()
+
         try:
             data, err = self.isp.verify(self.captcha_value.value)
             if err is not None:
@@ -93,6 +96,7 @@ class CaptchaVerifyDialog(ft.BottomSheet):
                 self.captcha_value.update()
             else:
                 self.callback(data)
+                Refs.users.current.update_list()
                 self.close()
         except requests.exceptions.Timeout:
             Dialogs.connection_timeout(self.page)
@@ -100,3 +104,6 @@ class CaptchaVerifyDialog(ft.BottomSheet):
             Dialogs.no_internet_connection(self.page)
         except Exception as err:
             Dialogs.error(err, self.page)
+
+        self.content.disabled = False
+        self.update()

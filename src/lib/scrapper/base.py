@@ -8,20 +8,12 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class ParserError(Exception):
-    def __init__(self, err: str):
-        super().__init__(err)
-
-    @staticmethod
-    def limit_or_service_err() -> str:
-        return "لايمكنك الاستعلام في الوقت الحالي .لقد تجازوت عدد مرات الاستعلام المسموح بها, أو أن هناك مشكلة بمزود الخدمة"
-
-
 class Erros:
     @classmethod
     def err(
         cls, resp: requests.Response, err_id: str
     ) -> str | None:  # if the return is None that means doesn't have any error!
+
         soup = Base.bs4(resp)
 
         # phone number error
@@ -37,6 +29,10 @@ class Erros:
             err := p.find("font").text.strip()
         ):
             return err
+
+    @staticmethod
+    def limit_or_service_err() -> str:
+        return "لايمكنك الاستعلام في الوقت الحالي .لقد تجازوت عدد مرات الاستعلام المسموح بها, أو أن هناك مشكلة بمزود الخدمة"
 
 
 class Payload:
@@ -61,19 +57,16 @@ class Payload:
 
 
 class Base:
-    def __init__(self):
+    def __init__(self) -> None:
         self._payload: Payload = Payload()
         self._login_url: str = ""
         self._captcha_url: str = ""
-        self._timeout: int = 10
-        self.init_session()
+        self._timeout: int = 15
+        self._session = requests.Session()
 
     @staticmethod
     def bs4(req: requests.Request) -> BeautifulSoup:
         return BeautifulSoup(req.content, "html.parser")
-
-    def init_session(self):
-        self._session = requests.Session()
 
     def login(self, username: str = None) -> requests.Response:
         if username is not None:
@@ -92,12 +85,7 @@ class Base:
     def fetch_captcha(self) -> bytes:
         return self._session.get(self.captcha_url, timeout=self._timeout).content
 
-    def set_login_url(self, value: str | int) -> str:
-        self._login_url = f"https://ptc.gov.ye/?page_id={value}"
-
-    def set_captcha_url(self, value: str) -> None:
-        self._captcha_url = f"https://ptc.gov.ye/wp-content/plugins/{value}/securimage/securimage_show.php?{str(random.random())}"
-
+    # abstract method
     def fetch_data(self, resp: requests.Response) -> dict[str, str]:
         pass
 
@@ -105,6 +93,14 @@ class Base:
     def login_url(self) -> str:
         return self._login_url
 
+    @login_url.setter
+    def login_url(self, value: str | int) -> None:
+        self._login_url = f"https://ptc.gov.ye/?page_id={value}"
+
     @property
     def captcha_url(self) -> str:
         return self._captcha_url
+
+    @captcha_url.setter
+    def captcha_url(self, value: str) -> str:
+        self._captcha_url = f"https://ptc.gov.ye/wp-content/plugins/{value}/securimage/securimage_show.php?{random.random()}"

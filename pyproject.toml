@@ -38,7 +38,7 @@ cleanup = true
 [tool.flet.android]
 split_per_abi = true
 build_arch = "armeabi-v7a" # arm64-v8a
-# adaptive_icon_background = "#3032FF"
+adaptive_icon_background = "#003374"
 
 
 [tool.flet.app]
@@ -47,7 +47,7 @@ exclude = ["media", "fastlane", "assets/animations", ".github", ".git"]
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.10,<4"
 flet = {version = "0.25.2"}
 bs4 = {version = "0.0.2"}
 requests = {version = "2.32.3"}
@@ -59,8 +59,8 @@ pydal = {version = "20241201.2"}
 flet = {extras = ["all"], version = "0.25.2"}
 
 
-[tool.flet.flutter.pubspec.dependency_overrides]
-file_picker = "8.1.4"
+# [tool.flet.flutter.pubspec.dependency_overrides]
+# file_picker = "8.1.4"
 
 
 [build-system]

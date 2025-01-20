@@ -27,10 +27,10 @@ class UserListTile(ft.ListTile):
             alignment=ft.alignment.bottom_right,
             controls=[
                 ft.Image(src=f"atype/{user.atype}.png", width=38, height=38),
-                ft.Image(
-                    src="verified.svg",
-                    width=14,
-                    height=14,
+                ft.Icon(
+                    name=ft.Icons.VERIFIED,
+                    color=ft.Colors.BLUE,
+                    size=16,
                     visible=user.data is not None,
                 ),
             ],

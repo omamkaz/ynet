@@ -2,15 +2,15 @@
 
 import requests
 
-from .base import Base, ParserError
+from .base import Base, Erros
 
 
 class Phone(Base):
     def __init__(self):
         super().__init__()
 
-        self.set_login_url("2354")
-        self.set_captcha_url("quarybill-api-plug")
+        self.login_url = "2354"
+        self.captcha_url = "quarybill-api-plug"
 
         self._payload.username = "phoneid"
         self._payload.captcha = "captcha_code_qbill"
@@ -45,4 +45,4 @@ class Phone(Base):
                 )[1:]
             }
         except AttributeError:
-            raise ParserError(ParserError.limit_or_service_err())
+            raise Erros.limit_or_service_err()

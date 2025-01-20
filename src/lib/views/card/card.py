@@ -34,7 +34,6 @@ class Card(ft.GestureDetector):
             alignment=ft.alignment.center,
             margin=ft.margin.only(left=14, right=14, top=25),
             animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
-            # bgcolor=ThemeController.get_color(self.page.theme.color_scheme_seed, 800),
             gradient=ft.LinearGradient(
                 colors=ThemeController.get_gradient_colors(
                     self.page.theme.color_scheme_seed
