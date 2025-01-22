@@ -44,6 +44,14 @@ class Platform:
     def is_desktop(page: ft.Page) -> bool:
         return page.platform not in (ft.PagePlatform.ANDROID, ft.PagePlatform.IOS)
 
+    @staticmethod
+    def is_mobile(page: ft.Page) -> bool:
+        return page.platform not in (
+            ft.PagePlatform.LINUX,
+            ft.PagePlatform.WINDOWS,
+            ft.PagePlatform.MACOS,
+        )
+
 
 class Refs:
     cards = ft.Ref[ft.Container]()
@@ -131,18 +139,24 @@ class ThemeController:
             divider_theme=ft.DividerTheme(color=color_900),
         )
 
-        if page.controls:
-            controls = page.controls[0].content.controls[0].controls
-            controls[0].bgcolor = color
+        # Page.SafeArea.Column[0].Stack
+        controls = page.controls[0].content.controls[0].controls
 
-            for c in controls[1].controls[:3]:
-                c.content.gradient.colors = ThemeController.get_gradient_colors(color)
+        # Page.SafeArea.Column[0].Stack[0].Container
+        controls[0].bgcolor = color
 
-            for t in page.controls[0].content.controls[1].content.controls:
-                if t.bgcolor is not None:
-                    t.bgcolor = color
+        # Page.SafeArea.Column[0].Stack[1].Cards
+        for c in controls[1].controls[:3]:
+            c.content.gradient = ft.LinearGradient(
+                colors=ThemeController.get_gradient_colors(color)
+            )
 
-        for c in Refs.users.current.controls if Refs.users.current else []:
+        # Page.SafeArea.Column[1].TabSwitch
+        tab_switch = page.client_storage.get("tab_switch") or 0
+        for i, t in enumerate(page.controls[0].content.controls[1].content.controls):
+            t.bgcolor = color if i == tab_switch else None
+
+        for c in Refs.users.current.controls:
             c.selected_tile_color = ft.Colors.with_opacity(0.09, color)
 
         page.client_storage.set("theme_color", color)
@@ -152,7 +166,6 @@ class ThemeController:
 class Dialogs:
     @staticmethod
     def _dialog(*, icon: ft.Icons, err: str, lottie, page: ft.Page) -> None:
-
         page.open(
             ft.AlertDialog(
                 icon=ft.Icon(icon, ft.Colors.RED),
@@ -171,18 +184,18 @@ class Dialogs:
         )
 
     @staticmethod
-    def error(err: str, page: ft.Page) -> None:
-        Dialogs._dialog(
-            icon=ft.Icons.ERROR, err=str(err), lottie=LottieFiles.error, page=page
-        )
-
-    @staticmethod
     def connection_timeout(page: ft.Page) -> None:
         Dialogs._dialog(
             icon=ft.Icons.TIMER,
             err="يبدو أن الاتصال بالأنترنت ضعيف, او ان المزود لايستجيب في الوقت الحالي.",
             lottie=LottieFiles.error,
             page=page,
+        )
+
+    @staticmethod
+    def error(err: str, page: ft.Page) -> None:
+        Dialogs._dialog(
+            icon=ft.Icons.ERROR, err=str(err), lottie=LottieFiles.error, page=page
         )
 
 

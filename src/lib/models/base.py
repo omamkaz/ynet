@@ -32,6 +32,7 @@ class DBEngine:
                 Field(
                     "created", "datetime", default=datetime.now()
                 ),  # Current datetime
+                # Field("last_update", "datetime"),
             )
             cls.db.commit()
         except sqlite3.OperationalError:

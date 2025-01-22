@@ -55,13 +55,12 @@ class CardItem(ft.Container):
         self.content.controls[-1].visible = True
         self.update()
 
-    def _set_item_value(self, index: int, value: str) -> None:
-        c = self.content.controls[0].controls[index]
-        c.value = value
-        self.update()
-
     def set_label(self, label: str):
         self._set_item_value(1, label)
 
     def set_value(self, value: str):
         self._set_item_value(0, value)
+
+    def _set_item_value(self, index: int, value: str) -> None:
+        self.content.controls[0].controls[index].value = value
+        self.update()

@@ -3,7 +3,7 @@
 
 import flet as ft
 
-from ...constant import ACCOUNT_TYPES, Platform, Refs
+from ...constant import ACCOUNT_TYPES, Refs
 
 
 class TextField(ft.TextField):
@@ -13,7 +13,6 @@ class TextField(ft.TextField):
         label: str,
         regex: str = "^[a-zA-Z0-9]*$",
         required: bool = False,
-        suffix_visible: bool = False,
         **kwargs,
     ):
         super().__init__(label=label, **kwargs)
@@ -22,35 +21,25 @@ class TextField(ft.TextField):
 
         self.page = page
 
-        self.max_length = 32
         self.text_align = "center"
         self.input_filter = ft.InputFilter(regex)
 
-        self.suffix = ft.IconButton(
-            icon=ft.Icons.NUMBERS,
-            on_click=self.change_input_type,
-            visible=suffix_visible and not Platform.is_desktop(page),
-        )
-
+        self.set_max_length(32)
         self.on_change = self.on_text_changed
-        self.counter_text = f"{len(self.value)}/{self.max_length}"
+
+    def set_max_length(self, length: int) -> None:
+        self.max_length = length
+        self.set_counter_text()
 
     def on_text_changed(self, e: ft.ControlEvent = None):
         if self._required:
             self.error_text = "هاذا الحقل مطلوب" if not self.value.strip() else None
 
+        self.set_counter_text()
+        self.update()
+
+    def set_counter_text(self) -> None:
         self.counter_text = f"{len(self.value)}/{self.max_length}"
-        self.update()
-
-    def change_input_type(self, e: ft.ControlEvent = None):
-        self.keyboard_type = (
-            None if self.keyboard_type is not None else ft.KeyboardType.NUMBER
-        )
-        self.suffix.selected = self.keyboard_type is not None
-        self.update()
-
-    def toggle_suffix(self, on: bool) -> None:
-        self.suffix.visible = on and not Platform.is_desktop(self.page)
 
 
 class DropdownOption(ft.dropdown.Option):
@@ -87,7 +76,6 @@ class UserDialog(ft.BottomSheet):
             label="أسم المستخدم",
             required=True,
             on_submit=self.on_submit,
-            suffix_visible=True,
         )
 
         self.password = TextField(
@@ -97,7 +85,6 @@ class UserDialog(ft.BottomSheet):
             password=True,
             can_reveal_password=True,
             on_submit=self.on_submit,
-            suffix_visible=True,
         )
 
         self.content = ft.SafeArea(
@@ -156,34 +143,23 @@ class UserDialog(ft.BottomSheet):
         self.page.close(self)
 
     def on_submit_done(self):
-        Refs.users.current.update_list()
-        Refs.users.current.set_selected_item(Refs.users.current.controls[-1])
-        Refs.users.current.select_item(-1)
+        Refs.users.current.update_list(-1)
         self.close()
 
     def _change_account_type(self, atype: int) -> None:
         self.drop_down.current.value = atype
-
         self.password.visible = atype == 0
-
         self.title.current.value = ACCOUNT_TYPES[atype]
         self.logo.current.src = f"atype/{atype}.png"
-
         self.username.value = "" if atype != 1 else "10"
-
-        self.username.max_length = (9, 8)[atype - 1] if atype != 0 else 32
+        self.username.set_max_length((9, 8)[atype - 1] if atype != 0 else 32)
         self.username.keyboard_type = ft.KeyboardType.NUMBER if atype != 0 else None
         self.username.input_filter = ft.InputFilter(
             regex_string=(r"^[a-zA-Z0-9]*$", r"^10[0-9]*$", r"^[0-9]*$")[atype]
         )
 
-        self.username.toggle_suffix(atype == 0)
-        self.password.toggle_suffix(atype == 0)
-
     def change_account_type(self, atype: int) -> None:
         self._change_account_type(atype)
-        self.username.update()
-        self.password.update()
         self.update()
 
     def valid_user(self, atype: int = 0) -> bool | None:

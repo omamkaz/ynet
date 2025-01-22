@@ -4,7 +4,7 @@
 import flet as ft
 import requests
 
-from ...constant import Dialogs, Refs, ThemeController
+from ...constant import Dialogs, Refs
 from ...models.user import User
 from .credit import CardCredit
 from .item import CardItem
@@ -19,11 +19,12 @@ class Card(ft.GestureDetector):
         super().__init__(**kwargs)
 
         self.page = page
+
         self.card_title: CardTitle = CardTitle(page, atype)
         self.card_credit: CardCredit = CardCredit()
         self.card_items = ft.Ref[ft.Column]()
 
-        self.on_pan_end = self._on_pan_end
+        self.on_pan_end = lambda _: self._on_pan_end()
         self.on_pan_update = self._on_pan_update
 
         self.content = ft.Container(
@@ -34,11 +35,6 @@ class Card(ft.GestureDetector):
             alignment=ft.alignment.center,
             margin=ft.margin.only(left=14, right=14, top=25),
             animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
-            gradient=ft.LinearGradient(
-                colors=ThemeController.get_gradient_colors(
-                    self.page.theme.color_scheme_seed
-                )
-            ),
             shadow=ft.BoxShadow(
                 spread_radius=-10,
                 blur_radius=8,
@@ -61,11 +57,15 @@ class Card(ft.GestureDetector):
         )
 
         self.card_title.content.controls[0].controls[0].on_click = (
-            lambda _: self._on_pan_end(None, True)
+            lambda _: self._on_pan_end(True)
         )
 
     def set_card_items(self, data: dict[str, str]) -> None:
         self.card_items.current.controls.clear()
+
+        # if self._user.last_update is not None:
+        #     data["تاريخ اخر تحديث"] = self._user.last_update.strftime("%A %d/%m/%Y %r")
+
         self.card_items.current.controls.extend(
             CardItem(label, value, end=(index == len(data) - 1))
             for index, (label, value) in enumerate(data.items())
@@ -127,7 +127,7 @@ class Card(ft.GestureDetector):
             self.content.margin.top += min(0.8, e.delta_y) * 5
             self.content.update()
 
-    def _on_pan_end(self, e: ft.DragEndEvent = None, is_desktop: bool = False) -> None:
+    def _on_pan_end(self, is_desktop: bool = False) -> None:
         check_margin: bool = self.content.margin.top >= (25 + 8) or is_desktop
         if check_margin and not self.is_loading() and self._user_id is not None:
             self.set_login(self._user_id)
@@ -137,7 +137,6 @@ class Card(ft.GestureDetector):
 
     def set_loading(self, on: bool) -> None:
         self.page.views[0].disabled = on
-        # self.card_title.content.controls[0].update()
         self.card_title.toggle_loading_mode(on)
         self.page.update()
 

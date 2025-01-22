@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from .base import DBEngine
 
 
 class User:
-    @staticmethod
-    def get_users():
-        return DBEngine.db().select(DBEngine.db.users.ALL)
-
     @staticmethod
     def add_user(
         atype: int,
@@ -18,7 +16,6 @@ class User:
         data: dict[str, str] = None,
         cookies: dict[str, str] = None,
     ):
-
         user_id = DBEngine.db.users.insert(
             atype=atype,
             username=username,
@@ -35,9 +32,7 @@ class User:
         user_id: int, atype: int, username: str, password: str, dname: str
     ) -> None:
 
-        user = DBEngine.db(DBEngine.db.users.id == user_id).select().first()
-
-        if user:
+        if user := User.get_user(user_id):
             user.dname = dname
 
             if (
@@ -61,13 +56,18 @@ class User:
     def edit_data_and_cookies(
         user_id: int, data: dict[str, str] = None, cookies: dict[str, str] = None
     ):
-
-        if user := DBEngine.db(DBEngine.db.users.id == user_id).select().first():
+        if user := User.get_user(user_id):
             user.data = data
             user.cookies = cookies
+            # user.last_update = datetime.now()
 
+            # Commit changes
             DBEngine.db(DBEngine.db.users.id == user_id).update(**user.as_dict())
             DBEngine.db.commit()
+
+    @staticmethod
+    def get_users():
+        return DBEngine.db().select(DBEngine.db.users.ALL)
 
     @staticmethod
     def get_user(user_id: int):

@@ -37,15 +37,16 @@ class CardCredit(ft.Container):
             ],
         )
 
-    def hide_credit_state(self):
+    def credit_visible(self, on: bool) -> None:
         span = self.content.controls[-1].spans[0]
-        span.visible = False
+        span.visible = on
         span.update()
 
+    def hide_credit_state(self):
+        self.credit_visible(False)
+
     def show_credit_state(self):
-        span = self.content.controls[-1].spans[0]
-        span.visible = True
-        span.update()
+        self.credit_visible(True)
 
     def _credit_state(self, value: str, color: str, prefix: str) -> None:
         span = self.content.controls[-1].spans[0]

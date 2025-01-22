@@ -11,14 +11,7 @@ class TabSwitch(ft.Container):
         super().__init__(**kwargs)
 
         self.page = page
-
         self.padding = ft.padding.only(left=10, right=10)
-
-        # if Refs.users.current.controls:
-        #     index = self.page.client_storage.get("cur_user") or 0
-        #     control = Refs.users.current.controls[index]
-        #     self.value = control._atype
-        # else:
 
         self.value = self.page.client_storage.get("tab_switch") or initial_value
         self.tabs = [
@@ -48,7 +41,6 @@ class TabSwitch(ft.Container):
             ),
             padding=5,
             border_radius=12,
-            bgcolor=self.get_bgcolor(active),
             alignment=ft.alignment.center,
             animate=ft.animation.Animation(
                 duration=300, curve=ft.AnimationCurve.DECELERATE
@@ -56,9 +48,6 @@ class TabSwitch(ft.Container):
             on_click=self.toggle_switch,
             data=active,
         )
-
-    def get_bgcolor(self, active: bool) -> str:
-        return self.page.theme.color_scheme_seed if active else None
 
     def toggle_switch(self, e):
         """Switch to the tab that was clicked and update its appearance."""
@@ -75,5 +64,5 @@ class TabSwitch(ft.Container):
 
     def update_tab(self, tab, active):
         """Update the visual state of a tab."""
-        tab.bgcolor = self.get_bgcolor(active)
+        tab.bgcolor = self.page.theme.color_scheme_seed if active else None
         tab.update()

@@ -22,7 +22,7 @@ class Cards(ft.Stack):
                     fit=ft.ImageFit.COVER, src_base64=LottieFiles.online_health_report
                 ),
                 alignment=ft.alignment.center,
-                on_click=lambda e: self.open_new_user_dialog(self.page),
+                on_click=lambda _: self.open_new_user_dialog(self.page),
             ),
             ft.Container(
                 content=ft.Column(
