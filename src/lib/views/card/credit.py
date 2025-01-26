@@ -50,9 +50,9 @@ class CardCredit(ft.Container):
 
     def _credit_state(self, value: str, color: str, prefix: str) -> None:
         span = self.content.controls[-1].spans[0]
+        span.visible = True
         span.style.color = color
         span.text = (" " * 1) + f"{prefix}{value}"
-        span.visible = True
         span.update()
 
     def increment(self, value: str) -> None:
@@ -76,8 +76,6 @@ class CardCredit(ft.Container):
 
         old_value = get_value(old_data)
         new_value = get_value(data)
-
-        self.show_credit_state()
 
         if new_value < old_value:
             self.decrement(UserData.custom_credit(old_value - new_value))
