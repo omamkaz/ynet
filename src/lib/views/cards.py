@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
+import flet_lottie as fl
 
 from ..constant import LottieFiles, Refs
 from .card import ADSLCard, Card, LTECard, PhoneCard
@@ -18,7 +19,7 @@ class Cards(ft.Stack):
             LTECard(page, visible=False),
             PhoneCard(page, visible=False),
             ft.Container(
-                content=ft.Lottie(
+                content=fl.Lottie(
                     fit=ft.ImageFit.COVER, src_base64=LottieFiles.online_health_report
                 ),
                 alignment=ft.alignment.center,
@@ -27,7 +28,7 @@ class Cards(ft.Stack):
             ft.Container(
                 content=ft.Column(
                     controls=[
-                        ft.Lottie(
+                        fl.Lottie(
                             fit=ft.ImageFit.COVER, src_base64=LottieFiles.pin_required
                         ),
                         ft.Text(value="قم بالضغط هنا لاكمال التسجيل"),

@@ -6,6 +6,7 @@
 import re
 
 import flet as ft
+import flet_lottie as fl
 from humanize import naturalsize
 
 APP_VERSION = "v13"
@@ -170,7 +171,7 @@ class Dialogs:
             ft.AlertDialog(
                 icon=ft.Icon(icon, ft.Colors.RED),
                 title=ft.Text(value=str(err), text_align="center", rtl=True),
-                content=ft.Lottie(src_base64=lottie, fit=ft.ImageFit.COVER),
+                content=fl.Lottie(src_base64=lottie, fit=ft.ImageFit.COVER),
             )
         )
 

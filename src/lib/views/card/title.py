@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
+import flet_lottie as fl
 
 from ...constant import LottieFiles, Platform
 
@@ -13,7 +14,7 @@ class CardTitle(ft.Container):
         self.page = page
         self.padding = 10
 
-        self.loading_mode = ft.Ref[ft.Lottie]()
+        self.loading_mode = ft.Ref[fl.Lottie]()
 
         self.content = ft.Row(
             controls=[
@@ -23,7 +24,7 @@ class CardTitle(ft.Container):
                             icon=ft.Icons.REFRESH,
                             visible=Platform.is_desktop(self.page),
                         ),
-                        ft.Lottie(
+                        fl.Lottie(
                             ref=self.loading_mode,
                             src_base64=LottieFiles.down_arrow,
                             visible=not Platform.is_desktop(self.page),
