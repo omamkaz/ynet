@@ -26,7 +26,7 @@ build_number = 13
 
 [tool.flet.flutter]
 build_args = ["--release", "--analyze-size", "--target-platform", "android-arm"] # android-arm64
-# dependencies = ["flet_lottie"]
+dependencies = ["flet_lottie"]
 
 
 [tool.flet.compile]
@@ -48,12 +48,12 @@ exclude = ["media", "fastlane", "assets/animations", ".github", ".git"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
-flet = {version = "^0.26.0"}
-bs4 = {version = "0.0.2"}
-requests = {version = "2.32.3"}
-humanize = {version = "4.10.0"}
-pydal = {version = "20241201.2"}
-flet-lottie = {version = "^0.1.0"}
+flet = "0.26.0"
+bs4 = "0.0.2"
+requests = "2.32.3"
+humanize = "4.10.0"
+pydal = "20241201.2"
+flet-lottie = "0.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
