@@ -48,11 +48,11 @@ exclude = ["media", "fastlane", "assets/animations", ".github", ".git"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
-flet = {version = "0.25.2"}
-bs4 = {version = "0.0.2"}
-requests = {version = "2.32.3"}
-humanize = {version = "4.10.0"}
-pydal = {version = "20241201.2"}
+flet = "0.25.2"
+bs4 = "0.0.2"
+requests = "2.32.3"
+humanize = "4.10.0"
+pydal = "20241201.2"
 
 
 [tool.poetry.group.dev.dependencies]
