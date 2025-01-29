@@ -23,6 +23,14 @@ copyright = "Copyright (C) 2024 by omamkaz"
 
 build_number = 13
 
+dependencies = [
+    "flet-lottie",
+    "flet==0.26.0",
+    "bs4==0.0.2",
+    "requests==2.32.3",
+    "humanize==4.10.0",
+    "pydal==20241201.2"
+]
 
 [tool.flet.flutter]
 build_args = ["--release", "--analyze-size", "--target-platform", "android-arm"] # android-arm64
@@ -57,7 +65,7 @@ flet-lottie = "0.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
-flet = {extras = ["all"], version = "0.25.2"}
+flet = {extras = ["all"], version = "0.26.2"}
 
 
 [build-system]
