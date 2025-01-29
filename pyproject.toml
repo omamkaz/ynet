@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ynet"
-version = "13.0.0"
+version = "14.0.0"
 description = "Yemen Net Internet Services"
 authors = ["Osama Mohammed <omamkaz@gmail.com>"]
 readme = "README.md"
@@ -21,7 +21,7 @@ company = "omamkaz"
 # copyright text to display in about app dialogs
 copyright = "Copyright (C) 2024 by omamkaz"
 
-build_number = 13
+build_number = 14
 
 
 [tool.flet.flutter]

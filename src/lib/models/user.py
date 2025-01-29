@@ -59,7 +59,7 @@ class User:
         if user := User.get_user(user_id):
             user.data = data
             user.cookies = cookies
-            # user.last_update = datetime.now()
+            user.last_update = datetime.now()
 
             # Commit changes
             DBEngine.db(DBEngine.db.users.id == user_id).update(**user.as_dict())

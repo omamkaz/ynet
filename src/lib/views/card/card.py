@@ -51,6 +51,8 @@ class Card(ft.GestureDetector):
                         ref=self.card_items,
                         spacing=0,
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                        # expand=True,
+                        # scroll=ft.ScrollMode.AUTO,
                     ),
                 ],
             ),
@@ -63,8 +65,9 @@ class Card(ft.GestureDetector):
     def set_card_items(self, data: dict[str, str]) -> None:
         self.card_items.current.controls.clear()
 
-        # if self._user.last_update is not None:
-        #     data["تاريخ اخر تحديث"] = self._user.last_update.strftime("%A %d/%m/%Y %r")
+        # new
+        if self._user.last_update is not None:
+            data["تاريخ اخر تحديث"] = self._user.last_update.strftime("%A %d/%m/%Y %r")
 
         self.card_items.current.controls.extend(
             CardItem(label, value, end=(index == len(data) - 1))
