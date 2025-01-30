@@ -11,8 +11,8 @@ class CardCredit(ft.Container):
         super().__init__()
 
         self.padding = 0
-        self.margin = 0
-        self.expand = True
+        self.margin = ft.margin.only(bottom=10)
+        # self.expand = True
         self.content = ft.Column(
             spacing=6,
             alignment=ft.MainAxisAlignment.START,

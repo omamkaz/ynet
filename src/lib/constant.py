@@ -8,7 +8,7 @@ import re
 import flet as ft
 from humanize import naturalsize
 
-APP_VERSION = "v13"
+APP_VERSION = "v14"
 USERNAME = "omamkaz"
 ACCOUNT_TYPES = ("الأنترنت المنزلي (ADSL)", "الفورجي", "الهاتف المنزلي")
 

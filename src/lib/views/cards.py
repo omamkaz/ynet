@@ -45,7 +45,7 @@ class Cards(ft.Stack):
 
         top_card = self.page.controls[0].content.controls[0].controls[0]
         top_card.content.visible = 0 <= atype <= 2
-        top_card.height = 250 if atype != 2 else 170
+        top_card.height = 210 if atype != 2 else 190
         top_card.update()
 
         for i, c in enumerate(self.controls):

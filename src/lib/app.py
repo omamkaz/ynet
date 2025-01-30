@@ -76,7 +76,7 @@ class Application:
                                 ft.Container(
                                     padding=ft.padding.only(top=5),
                                     margin=0,
-                                    height=250,
+                                    height=210,
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
                                     content=ft.Row(
                                         controls=[

@@ -15,7 +15,7 @@ class Card(ft.GestureDetector):
     _user_id: int = None
     _isp = None
 
-    def __init__(self, page: ft.Page, atype: int | str = 0, **kwargs):
+    def __init__(self, page: ft.Page, atype: int | str, **kwargs):
         super().__init__(**kwargs)
 
         self.page = page
@@ -50,10 +50,11 @@ class Card(ft.GestureDetector):
                     ft.Column(
                         ref=self.card_items,
                         spacing=0,
+                        expand=True,
+                        scroll=ft.ScrollMode.AUTO,
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                        # expand=True,
-                        # scroll=ft.ScrollMode.AUTO,
                     ),
+                    ft.Icon(ft.Icons.ARROW_DROP_DOWN, visible=atype != 2),
                 ],
             ),
         )
@@ -65,7 +66,6 @@ class Card(ft.GestureDetector):
     def set_card_items(self, data: dict[str, str]) -> None:
         self.card_items.current.controls.clear()
 
-        # new
         if self._user.last_update is not None:
             data["تاريخ اخر تحديث"] = self._user.last_update.strftime("%A %d/%m/%Y %r")
 
@@ -148,7 +148,7 @@ class Card(ft.GestureDetector):
 
     @property
     def card_height(self) -> int:
-        return 320
+        return 240
 
     @property
     def _user(self) -> User:

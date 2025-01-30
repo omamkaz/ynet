@@ -41,4 +41,4 @@ class PhoneCard(Card):
 
     @property
     def card_height(self) -> int:
-        return 200
+        return 220

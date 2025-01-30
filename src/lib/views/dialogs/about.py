@@ -16,7 +16,7 @@ class LinkIcon(ft.IconButton):
         self.on_click = self.on_open_url
 
         self.content = ft.Image(
-            src=f"/logo/{icon}.svg", color=color, width=18, height=18
+            src=f"logo/{icon}.svg", color=color, width=18, height=18
         )
 
     def on_open_url(self, e: ft.ControlEvent) -> None:
@@ -44,7 +44,7 @@ class AboutDialog(ft.BottomSheet):
                         width=64,
                         height=64,
                         shape=ft.BoxShape("circle"),
-                        image=ft.DecorationImage(src="/developer.jpg", fit="cover"),
+                        image=ft.DecorationImage(src="developer.jpg", fit="cover"),
                     ),
                     ft.Text(value="Osama Mohammed AL-Zabidi", size=14),
                     ft.Text(
@@ -68,9 +68,7 @@ class AboutDialog(ft.BottomSheet):
                                     content_padding=10,
                                     border_width=1.5,
                                     text_size=14,
-                                    on_focus=lambda e: self.page.set_clipboard(
-                                        e.control.value
-                                    ),
+                                    on_focus=self.on_copy,
                                 ),
                                 ft.Row(
                                     spacing=0,
@@ -96,4 +94,13 @@ class AboutDialog(ft.BottomSheet):
                     ),
                 ],
             ),
+        )
+
+    def on_copy(self, e: ft.ControlEvent = None) -> None:
+        self.page.set_clipboard(e.control.value)
+        self.page.open(
+            ft.AlertDialog(
+                icon=ft.Icon(ft.Icons.INFO),
+                content=ft.Text("تم نسخ أسم المستخدم إلى الححافظة.", rtl=True),
+            )
         )
