@@ -51,7 +51,7 @@ class Card(ft.GestureDetector):
                         ref=self.card_items,
                         spacing=0,
                         expand=True,
-                        scroll=ft.ScrollMode.AUTO,
+                        scroll=ft.ScrollMode.HIDDEN,
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
                     ft.Icon(ft.Icons.ARROW_DROP_DOWN, visible=atype != 2),
@@ -115,14 +115,14 @@ class Card(ft.GestureDetector):
         cookies: dict[str, str] = None,
     ) -> None:
 
+        Refs.cards.current.toggle_card(atype)
+
         User.edit_data_and_cookies(self._user_id, data, cookies)
         self.set_card_data(old_data)
 
-        Refs.cards.current.toggle_card(atype)
         for c in Refs.users.current.controls:
             c.selected = self._user_id == c._user.id
             c.set_verified(c._user.data is not None)
-
         Refs.users.current.update()
 
     def _on_pan_update(self, e: ft.DragUpdateEvent) -> None:
