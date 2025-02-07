@@ -7,7 +7,7 @@ env:
   # https://flet.dev/docs/publish#versioning
   # flutter version 3.24.3, 3.27.[1,2]
   PYTHON_VERSION: 3.12.5
-  FLUTTER_VERSION: 3.24.3
+  FLUTTER_VERSION: 3.27
 
 jobs:
   build-apk:
