@@ -1,4 +1,4 @@
-[tool.poetry]
+[project]
 name = "ynet"
 version = "13.0.0"
 description = "Yemen Net Internet Services"
