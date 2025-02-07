@@ -4,25 +4,6 @@ version = "13.0.0"
 description = "Yemen Net Internet Services"
 authors = ["Osama Mohammed <omamkaz@gmail.com>"]
 readme = "README.md"
-
-
-[tool.flet]
-# org name in reverse domain name notation, e.g. "com.mycompany".
-# Combined with project.name to build bundle ID for iOS and Android apps
-org = "com.omamkaz"
-
-# project display name that is used as an app title on Android and iOS home screens,
-# shown in window titles and about app dialogs on desktop.
-product = "ynet"
-
-# company name to display in about app dialogs
-company = "omamkaz"
-
-# copyright text to display in about app dialogs
-copyright = "Copyright (C) 2024 by omamkaz"
-
-build_number = 13
-
 dependencies = [
     "flet-lottie",
     "flet==0.26.0",
@@ -32,9 +13,18 @@ dependencies = [
     "pydal==20241201.2"
 ]
 
+
+[tool.flet]
+org = "com.omamkaz"
+product = "ynet"
+company = "omamkaz"
+copyright = "Copyright (C) 2024 by omamkaz"
+build_number = 13
+
+
 [tool.flet.flutter]
 build_args = ["--release", "--analyze-size", "--target-platform", "android-arm"] # android-arm64
-dependencies = ["flet_lottie"]
+# dependencies = ["flet_lottie"]
 
 
 [tool.flet.compile]
@@ -54,20 +44,24 @@ path = "src"
 exclude = ["media", "fastlane", "assets/animations", ".github", ".git"]
 
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-flet = "0.26.0"
-bs4 = "0.0.2"
-requests = "2.32.3"
-humanize = "4.10.0"
-pydal = "20241201.2"
-flet-lottie = "0.1.0"
+# [tool.poetry.dependencies]
+# python = ">=3.10,<4"
+# flet = "0.26.0"
+# bs4 = "0.0.2"
+# requests = "2.32.3"
+# humanize = "4.10.0"
+# pydal = "20241201.2"
+# flet-lottie = "0.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
-flet = {extras = ["all"], version = "0.26.2"}
+flet = {extras = ["all"], version = "0.26.0"}
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+package-mode = false
