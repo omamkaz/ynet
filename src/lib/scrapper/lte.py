@@ -2,6 +2,7 @@
 
 import requests
 
+from ..constant import UserData
 from .base import Base, Erros
 
 
@@ -48,7 +49,9 @@ class LTE(Base):
                     tr.find("span").text.strip()
                 )
 
-            data["valid_credit"] = table[-2].find("td").text.strip()
+            valid_credit = table[-2].find("td").text.strip()
+            data["valid_credit"] = UserData.custom_credit(valid_credit.split()[0])
+
             data[table[-1].find("th").text.strip()] = self.translator(
                 table[-1].find("span").text.strip()
             )

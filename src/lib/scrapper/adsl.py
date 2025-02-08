@@ -5,6 +5,7 @@ from typing import Any, Callable
 
 import requests
 
+from ..constant import UserData
 from .base import Base
 
 
@@ -104,6 +105,19 @@ class ADSL:
         if cookies is not None:
             self.set_cookies(cookies)
 
+    def _post(self, url: str, data: Any, **kwargs) -> requests.Response:
+        return self._session.post(
+            url,
+            data,
+            timeout=self._timeout,
+            verify=False,
+            allow_redirects=True,
+            **kwargs,
+        )
+
+    def _get(self, url: str, **kwargs) -> requests.Response:
+        return self._session.get(url, timeout=self._timeout, verify=False, **kwargs)
+
     def fetch_payload_data(self, req: Callable) -> None:
         resp = req()
         resp_soup = Base.bs4(resp)
@@ -125,18 +139,11 @@ class ADSL:
             self._payload.set_password(password)
 
         # Login GET method
-        self.fetch_payload_data(
-            lambda: self._session.get(self._login_url, timeout=self._timeout)
-        )
+        self.fetch_payload_data(lambda: self._get(self._login_url))
 
         # Login POST method
         _post = self.fetch_payload_data(
-            lambda: self._session.post(
-                self._login_url,
-                self._payload.data,
-                allow_redirects=True,
-                timeout=self._timeout,
-            )
+            lambda: self._post(self._login_url, self._payload.data)
         )
         return _post.status_code
 
@@ -148,9 +155,7 @@ class ADSL:
 
     def verify(self, captcha: str) -> tuple[requests.Response, str | None]:
         self._payload.set_captcha(captcha)
-        resp = self._session.post(
-            self._login_url, data=self._payload.data, timeout=self._timeout
-        )
+        resp = self._post(self._login_url, self._payload.data)
         return (self.replace_exception(lambda: self.parse_data(resp)), Erros.err(resp))
 
     def parse_data(self, resp: requests.Response) -> dict[str, str]:
@@ -165,39 +170,50 @@ class ADSL:
         data = {
             "name": name.split(":")[-1].strip(),
             "account_status": values.pop(2).text.strip() == "حساب نشط",
-            "valid_credit": values.pop(-2).text.strip(),
+            # "valid_credit": values.pop(-2).text.strip(),
+            "valid_credit": UserData.custom_credit(
+                values.pop(-2).text.strip().split()[0]
+            ),
         }
 
         labels.pop(2)
         labels.pop(-2)
 
-        data.update({k.text.strip(): v.text.strip() for k, v in zip(labels, values)})
+        for k, v in zip(labels, values):
+            k = k.text.strip()
+            v = v.text.strip()
+
+            if "جيجابايت" in v:
+                data[k] = UserData.custom_credit(v.split()[0])
+                continue
+
+            if "تنبيه" in v:
+                date, warn = v.split("\r")
+                data[k] = date
+                data["warn"] = re.sub(r"\*\*(.+)\*\*", "", warn)
+                continue
+
+            data[k] = v
+
         return data
 
     def fetch_data(self, cookies: dict = None) -> dict:
         if cookies is not None:
             self.clear_cookies()
             self.set_cookies(cookies)
-        return self.parse_data(self._session.get(self._user_url, timeout=self._timeout))
+        return self.parse_data(self._get(self._user_url))
 
     def fetch_captcha(self) -> bytes:
-        return self._session.get(self._captcha_url).content
+        return self._get(self._captcha_url).content
 
     def fetch_credit(self, cards: list[int | str]) -> None:
-        self.fetch_payload_data(
-            lambda: self._session.get(self._credit_url, timeout=self._timeout)
-        )
+        self.fetch_payload_data(lambda: self._get(self._credit_url))
 
         self._payload.set_credit_cards(cards)
         self._payload.set_credit_submit()
 
         _post = self.fetch_payload_data(
-            lambda: self._session.post(
-                self._credit_url,
-                self._payload.data,
-                allow_redirects=True,
-                timeout=self._timeout,
-            )
+            self._post(self._credit_url, self._payload.data)
         )
 
         return "", Erros.err(_post)

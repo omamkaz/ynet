@@ -3,7 +3,6 @@
 
 import flet as ft
 
-from ....constant import UserData
 from ....scrapper import LTE
 from ...dialogs import CaptchaVerifyDialog
 from ..card import Card
@@ -16,7 +15,7 @@ class LTECard(Card):
         self._isp = LTE()
 
     def set_card_data(self, old_data: dict[str, str] = None) -> None:
-        pdata = UserData.filter_data(self._user.data.copy(), self._user.atype)
+        pdata = self._user.data.copy()
 
         self.card_title.set_logo(self._user.atype)
         self.card_title.set_title(self._user.username)

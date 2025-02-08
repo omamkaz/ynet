@@ -64,38 +64,6 @@ class UserData:
     def custom_credit(value: str | float | int) -> str:
         return naturalsize(float(value) * 10**9, format="%.2f")
 
-    @classmethod
-    def filter_data(cls, data: dict[str, str], atype: int | str) -> dict[str, str]:
-        return getattr(cls, f"type_{atype}")(data)
-
-    @classmethod
-    def type_0(cls, data: dict[str, str]) -> dict[str, str]:
-        pdata = data.copy()
-        for k, v in pdata.items():
-            if isinstance(v, str):
-                if "جيجابايت" in v:
-                    u, _ = v.strip().split()
-                    v = UserData.custom_credit(u.strip())
-                    data[k] = v
-                if "تنبيه" in v:
-                    date, warn = v.split("\r")
-                    data[k] = date
-                    data["تنبية"] = re.sub(r"\*\*(.+)\*\*", "", warn)
-        return data
-
-    @classmethod
-    def type_1(cls, data: dict[str, str]) -> dict[str, str]:
-        for k, v in data.items():
-            if "gb" in k.lower():
-                u, _ = v.split()
-                v = UserData.custom_credit(u.strip())
-                data[k] = v
-        return data
-
-    @classmethod
-    def type_2(cls, data: dict[str, str]) -> dict[str, str]:
-        return data
-
 
 class ThemeController:
     @staticmethod

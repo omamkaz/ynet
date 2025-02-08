@@ -18,10 +18,16 @@ class UserListTile(ft.ListTile):
         self._index = index
         self._user = user
 
+        self._warn = None
+        if user.data is not None:
+            self._warn = user.data.get("warn", None)
+
         self.on_click = self.on_item_click
 
-        self.title = ft.Text(value=user.dname or f"حساب رقم {index}", rtl=True)
-        self.subtitle = ft.Text(value=user.username, rtl=True)
+        self.title = ft.Text(
+            value=user.dname or f"حساب رقم {index}", rtl=True, expand=True
+        )
+        self.subtitle = ft.Text(value=user.username, rtl=True, expand=True)
 
         self.trailing = ft.Stack(
             alignment=ft.alignment.bottom_right,
@@ -36,25 +42,39 @@ class UserListTile(ft.ListTile):
             ],
         )
 
-        self.leading = ft.PopupMenuButton(
-            tooltip="خيارات اخرى",
-            items=[
-                ft.PopupMenuItem(
-                    text="تجديد",
-                    icon=ft.Icons.CREDIT_CARD,
-                    on_click=self.on_credit,
+        self.leading = ft.Row(
+            controls=[
+                ft.PopupMenuButton(
+                    tooltip="خيارات اخرى",
+                    items=[
+                        ft.PopupMenuItem(
+                            text="تجديد",
+                            icon=ft.Icons.CREDIT_CARD,
+                            on_click=self.on_credit,
+                        ),
+                        ft.PopupMenuItem(
+                            text="تعديل", icon=ft.Icons.EDIT, on_click=self.on_edit
+                        ),
+                        ft.PopupMenuItem(
+                            text="حذف", icon=ft.Icons.DELETE, on_click=self.on_delete
+                        ),
+                    ],
                 ),
-                ft.PopupMenuItem(
-                    text="تعديل", icon=ft.Icons.EDIT, on_click=self.on_edit
-                ),
-                ft.PopupMenuItem(
-                    text="حذف", icon=ft.Icons.DELETE, on_click=self.on_delete
+                ft.IconButton(
+                    ft.Icons.WARNING,
+                    on_click=self.show_warn,
+                    visible=self._warn is not None,
+                    tooltip="تنبية",
                 ),
             ],
+            width=128,
+            height=128,
+            expand=False,
+            spacing=0,
         )
 
         if user.atype != 0:
-            self.leading.items.pop(0)
+            self.leading.controls[0].items.pop(0)
 
     def on_item_click(self, e: ft.ControlEvent = None) -> None:
         Refs.users.current.select_item(self._index)
@@ -104,3 +124,12 @@ class UserListTile(ft.ListTile):
     def on_credit(self, e: ft.ControlEvent = None) -> None:
         credit_card_dialog = CreditCardDialog(self.page, self._user.id)
         self.page.open(credit_card_dialog)
+
+    def show_warn(self, e: ft.ControlEvent = None) -> None:
+        self.page.open(
+            ft.AlertDialog(
+                title=ft.Text("تنبية", text_align="center"),
+                icon=ft.Icon(ft.Icons.WARNING),
+                content=ft.Text(self._warn, rtl=True),
+            )
+        )

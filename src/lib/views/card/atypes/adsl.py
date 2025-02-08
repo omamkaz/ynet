@@ -3,7 +3,6 @@
 
 import flet as ft
 
-from ....constant import UserData
 from ....models.user import User
 from ....scrapper import ADSL
 from ...dialogs import CaptchaVerifyDialog
@@ -17,7 +16,7 @@ class ADSLCard(Card):
         self._isp = ADSL()
 
     def set_card_data(self, old_data: dict[str, str] = None) -> None:
-        pdata = UserData.filter_data(self._user.data.copy(), self._user.atype)
+        pdata = self._user.data.copy()
 
         self.card_title.set_logo(self._user.atype)
         self.card_title.set_subtitle(self._user.username)

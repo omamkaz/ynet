@@ -66,17 +66,16 @@ class Card(ft.GestureDetector):
     def set_card_items(self, data: dict[str, str]) -> None:
         self.card_items.current.controls.clear()
 
+        _data = data.copy()
+        _data.pop("warn", None)
+        _len = len(_data)
+
         if self._user.last_update is not None:
-            data["تاريخ اخر تحديث"] = self._user.last_update.strftime("%A %d/%m/%Y %r")
+            _data["تاريخ اخر تحديث"] = self._user.last_update.strftime("%A %d/%m/%Y %r")
 
         self.card_items.current.controls.extend(
-            CardItem(label, value, end=(index == len(data) - 1))
-            for index, (label, value) in enumerate(data.items())
-        )
-        self.content.height = (
-            self.card_height + (20 * (len(data) - 5))
-            if len(data) >= 6
-            else self.card_height
+            CardItem(label, value, end=index == _len)
+            for index, (label, value) in enumerate(_data.items())
         )
 
     def set_data(self, user_id: int) -> None:
