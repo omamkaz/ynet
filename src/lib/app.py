@@ -28,8 +28,9 @@ class Application:
 
         page.padding = 0
         page.expand = True
+        page.adaptive = True
 
-        # page.window.wait_until_ready_to_show = True
+        page.window.wait_until_ready_to_show = True
 
         page.vertical_alignment = ft.MainAxisAlignment.CENTER
         page.horizontal_alignment = ft.CrossAxisAlignment.CENTER

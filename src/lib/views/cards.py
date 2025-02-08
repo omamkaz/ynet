@@ -23,6 +23,7 @@ class Cards(ft.Stack):
                 ),
                 alignment=ft.alignment.center,
                 on_click=lambda _: self.open_new_user_dialog(self.page),
+                visible=False,
             ),
             ft.Container(
                 content=ft.Column(
@@ -37,6 +38,7 @@ class Cards(ft.Stack):
                 ),
                 alignment=ft.alignment.center,
                 on_click=self.on_verify_click,
+                visible=False,
             ),
         ]
 
