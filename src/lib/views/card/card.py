@@ -147,7 +147,7 @@ class Card(ft.GestureDetector):
 
     @property
     def card_height(self) -> int:
-        return 240
+        return 280
 
     @property
     def _user(self) -> User:
