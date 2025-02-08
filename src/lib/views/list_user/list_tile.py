@@ -126,10 +126,14 @@ class UserListTile(ft.ListTile):
         self.page.open(credit_card_dialog)
 
     def show_warn(self, e: ft.ControlEvent = None) -> None:
-        self.page.open(
-            ft.AlertDialog(
-                title=ft.Text("تنبية", text_align="center"),
-                icon=ft.Icon(ft.Icons.WARNING),
-                content=ft.Text(self._warn, rtl=True),
-            )
+        def open_credit_dialog():
+            self.on_credit()
+            self.page.close(warn_alert)
+
+        warn_alert = ft.AlertDialog(
+            title=ft.Text("تنبية", text_align="center"),
+            icon=ft.Icon(ft.Icons.WARNING),
+            content=ft.Text(self._warn, rtl=True),
+            actions=[ft.Button(text="تجديد", on_click=lambda _: open_credit_dialog())],
         )
+        self.page.open(warn_alert)
