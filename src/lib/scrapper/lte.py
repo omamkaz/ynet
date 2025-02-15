@@ -50,7 +50,7 @@ class LTE(Base):
                 )
 
             valid_credit = table[-2].find("td").text.strip()
-            data["valid_credit"] = UserData.custom_credit(valid_credit.split()[0])
+            data["valid_credit"] = valid_credit.split()[0] #UserData.custom_credit(valid_credit.split()[0])
 
             data[table[-1].find("th").text.strip()] = self.translator(
                 table[-1].find("span").text.strip()
