@@ -17,8 +17,7 @@ class EditUserDialog(UserDialog):
 
         self.dname.value = self.user.dname
         self.username.value = self.user.username
-        if self.user.atype == 0:
-            self.password.value = self.user.password
+        self.password.value = self.user.password if self.user.atype == 0 else None
 
     def on_submit(self, e: ft.ControlEvent = None):
         super().on_submit(e)
@@ -41,7 +40,7 @@ class EditUserDialog(UserDialog):
             self.user.id,
             atype,
             self.username.value,
-            self.password.value,
+            (self.password.value if self.password.value else None),
             self.dname.value,
         )
 

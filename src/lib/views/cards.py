@@ -27,16 +27,19 @@ class Cards(ft.Stack):
             ),
             ft.Container(
                 content=ft.Column(
+                    spacing=0,
                     controls=[
                         ft.Lottie(
-                            fit=ft.ImageFit.COVER, src_base64=LottieFiles.pin_required
+                            fit=ft.ImageFit.COVER,
+                            src_base64=LottieFiles.pin_required,
+                            height=180,
                         ),
                         ft.Text(value="قم بالضغط هنا لاكمال التسجيل"),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 ),
-                alignment=ft.alignment.center,
+                alignment=ft.alignment.top_center,
                 on_click=self.on_verify_click,
                 visible=False,
             ),

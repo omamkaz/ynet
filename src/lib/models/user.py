@@ -29,7 +29,7 @@ class User:
 
     @staticmethod
     def edit_user(
-        user_id: int, atype: int, username: str, password: str, dname: str
+        user_id: int, atype: int, username: str, password: str | None, dname: str
     ) -> None:
 
         if user := User.get_user(user_id):
@@ -40,7 +40,6 @@ class User:
                 or user.username != username
                 or user.password != password
             ):
-
                 user.atype = atype
                 user.username = username
                 user.password = None if atype != 0 else (password or "123456")

@@ -17,10 +17,8 @@ class TextField(ft.TextField):
     ):
         super().__init__(label=label, **kwargs)
 
-        self._required: bool = required
-
         self.page = page
-
+        self._required: bool = required
         self.text_align = "center"
         self.input_filter = ft.InputFilter(regex)
 
@@ -69,7 +67,7 @@ class UserDialog(ft.BottomSheet):
         self.title = ft.Ref[ft.Text]()
         self.drop_down = ft.Ref[ft.Dropdown]()
 
-        self.dname = TextField(page=self.page, label="الاسم المستعار", regex="")
+        self.dname = TextField(page=self.page, label="أسم الحساب", regex="")
 
         self.username = TextField(
             page=self.page,
@@ -81,7 +79,7 @@ class UserDialog(ft.BottomSheet):
         self.password = TextField(
             page=self.page,
             value="123456",
-            label="كلمة السر",
+            label="كلمة المرور",
             password=True,
             can_reveal_password=True,
             on_submit=self.on_submit,
@@ -128,7 +126,7 @@ class UserDialog(ft.BottomSheet):
                         alignment=ft.MainAxisAlignment.END,
                         controls=[
                             ft.ElevatedButton(
-                                text="الغاء",
+                                text="إلغاء",
                                 color=ft.Colors.RED,
                                 on_click=lambda e: self.close(),
                             ),
@@ -148,9 +146,13 @@ class UserDialog(ft.BottomSheet):
 
     def _change_account_type(self, atype: int) -> None:
         self.drop_down.current.value = atype
-        self.password.visible = atype == 0
         self.title.current.value = ACCOUNT_TYPES[atype]
         self.logo.current.src = f"atype/{atype}.png"
+
+        # config password field
+        self.password.visible = atype == 0
+
+        # config username field
         self.username.value = "" if atype != 1 else "10"
         self.username.set_max_length((9, 8)[atype - 1] if atype != 0 else 32)
         self.username.keyboard_type = ft.KeyboardType.NUMBER if atype != 0 else None

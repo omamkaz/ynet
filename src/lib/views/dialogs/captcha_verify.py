@@ -96,7 +96,7 @@ class CaptchaVerifyDialog(ft.BottomSheet):
                 self.captcha_value.update()
             else:
                 self.callback(data)
-                Refs.users.current.update_list()
+                # Refs.users.current.update_list()
                 self.close()
         except requests.exceptions.Timeout:
             Dialogs.connection_timeout(self.page)

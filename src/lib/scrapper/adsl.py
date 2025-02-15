@@ -171,9 +171,11 @@ class ADSL:
             "name": name.split(":")[-1].strip(),
             "account_status": values.pop(2).text.strip() == "حساب نشط",
             # "valid_credit": values.pop(-2).text.strip(),
-            "valid_credit": UserData.custom_credit(
-                values.pop(-2).text.strip().split()[0]
-            ),
+            "valid_credit": values.pop(-2)
+            .text.strip()
+            .split()[
+                0
+            ],  # UserData.custom_credit(values.pop(-2).text.strip().split()[0])
         }
 
         labels.pop(2)

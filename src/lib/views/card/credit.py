@@ -12,7 +12,6 @@ class CardCredit(ft.Container):
 
         self.padding = 0
         self.margin = ft.margin.only(bottom=10)
-        # self.expand = True
         self.content = ft.Column(
             spacing=6,
             alignment=ft.MainAxisAlignment.START,
@@ -52,7 +51,7 @@ class CardCredit(ft.Container):
         span = self.content.controls[-1].spans[0]
         span.visible = True
         span.style.color = color
-        span.text = (" " * 1) + f"{prefix}{value}"
+        span.text = (" " * 2) + f"{prefix}{value}"
         span.update()
 
     def increment(self, value: str) -> None:
@@ -63,7 +62,7 @@ class CardCredit(ft.Container):
 
     def set_credit(self, value: str):
         credit = self.content.controls[-1]
-        credit.value = value
+        credit.value = UserData.custom_credit(value)
         credit.update()
 
     def set_credit_state(self, data: dict[str, str], old_data: dict[str, str]) -> None:
